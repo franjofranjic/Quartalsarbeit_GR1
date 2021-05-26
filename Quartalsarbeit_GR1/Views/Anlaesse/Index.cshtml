@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Anlass>
+
+@{
+    ViewBag.Title = "Anlaesse";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Bezeichnung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ort)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Datum)
+        </th>
+        <th>Konfiguration</th>
+        <th>Teilnehmer</th>
+        <th>Statisik</th>
+        <th>Startnummer Block</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Bezeichnung)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Ort)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Datum)
+    </td>
+    <td>
+        @Html.ActionLink("Konfiguration", "Konfiguration", new { id = item.ID })
+    </td>
+    <td>
+        @Html.ActionLink("Teilnehmer", "Teilnehmer", new { id = item.ID })
+    </td>
+    <td>
+        @Html.ActionLink("Statistik", "Statistik", new { id = item.ID })
+    </td>
+    <td>
+        @Html.ActionLink("Startnummer Block", "Startnummer", new { id = item.ID })
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
+}
+
+</table>

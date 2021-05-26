@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Kategorie>
+
+@{
+    ViewBag.Title = "Kategorien";
+}
+
+<h2>Kategorien</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Bezeichnung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MinAlter)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxAlter)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Geschlecht)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bezeichnung)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MinAlter)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxAlter)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Geschlecht)
+        </td>
+    </tr>
+}
+
+</table>

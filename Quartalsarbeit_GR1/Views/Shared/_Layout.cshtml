@@ -1,0 +1,100 @@
+﻿@using Quartalsarbeit_GR1.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Meine ASP.NET-Anwendung</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/nav.css")
+    @Styles.Render("~/Content/jquery.mCustomScrollbar.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/fontawesome")
+
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+
+            <div id="dismiss">
+                <i class="fas fa-address-book"></i>
+            </div>
+
+            <div class="sidebar-header">
+                <h3>Techsport</h3>
+            </div>
+
+            <ul class="navbar-nav mr-auto">
+                @if (User.IsInRole(RoleName.Administrator))
+                {
+
+                    <li>@Html.ActionLink("Kategorien", "Index", "Kategorien")</li>
+                    <li>@Html.ActionLink("Disziplinen", "Index", "Disziplinen")</li>
+                    <li>@Html.ActionLink("Vereine", "Index", "Vereine")</li>
+                    <li>@Html.ActionLink("Anlässe", "Index", "Anlaesse")</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Anlässe", "Index", "Anlaesse")</li>
+                    <li>@Html.ActionLink("Athleten", "Index", "Athleten")</li>
+                }
+
+            </ul>
+            @Html.Partial("_LoginPartial")
+
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary mainnav">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+            </div>
+        </div>
+        <!-- Dark Overlay element -->
+        <div class="overlay"></div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            // hide sidebar
+            $('#sidebar').addClass('active');
+            // hide overlay
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            // open sidebar
+            $('#sidebar').removeClass('active');
+            // fade in the overlay
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
+

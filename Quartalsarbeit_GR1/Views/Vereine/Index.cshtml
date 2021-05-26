@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Verein>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Vereinsname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ort)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PLZ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Strasse)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vereinsverantwortlicher.Email)
+        </th>
+        <th>Athleten</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Vereinsname)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Ort)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.PLZ)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Strasse)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Vereinsverantwortlicher.Email)
+    </td>
+    <td>
+        @Html.ActionLink("Athleten", "Athleten", new { id = item.ID })
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
+}
+
+</table>

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.TeilnehmerViewModel>
+
+@{
+    ViewBag.Title = "Teilnehmer";
+}
+
+<h2>Teilnehmer</h2>
+
+<table class="table">
+    <tr>
+        <th>Teilnehmen</th>
+        <th>
+            @Html.DisplayNameFor(model => model.athlet.Vorname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.athlet.Nachname)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td></td>
+    <td>
+        @Html.DisplayFor(modelItem => item.athlet.Vorname)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.athlet.Nachname)
+    </td>
+</tr>
+}
+
+</table>

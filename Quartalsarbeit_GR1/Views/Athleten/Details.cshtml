@@ -1,0 +1,66 @@
+﻿@model Quartalsarbeit_GR1.Models.Athlet
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Athlet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Vorname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vorname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nachname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nachname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Geburtstag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Geburtstag)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Geschlecht)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Geschlecht)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gewicht)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gewicht)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Groesse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Groesse)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

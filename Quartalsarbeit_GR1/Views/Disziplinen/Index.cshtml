@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Disziplin>
+
+@{
+    ViewBag.Title = "Disziplinen";
+}
+
+<h2>Disziplinen</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Bezeichnung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Abkuerzung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Formel)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bezeichnung)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Abkuerzung)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Formel)
+        </td>
+    </tr>
+}
+
+</table>

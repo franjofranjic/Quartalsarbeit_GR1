@@ -1,0 +1,60 @@
+﻿@model Quartalsarbeit_GR1.Models.IndexViewModel
+@{
+    ViewBag.Title = "Verwalten";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Kontoeinstellungen ändern</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Kennwort:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Kennwort ändern", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Erstellen", "SetPassword")
+            }
+            ]
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Vorname:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vorname)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Nachname:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nachname)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Tel. Geschäftlich:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.TelGeschaeft)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Tel. Privat:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.TelPrivat)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>E-Mail:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+
+    @Html.ActionLink("Edit", "Edit")
+
+</div>

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Anlass>
+
+@{
+    ViewBag.Title = "Amlässe";
+}
+
+<h2>Anlässe</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Bezeichnung)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ort)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Datum)
+        </th>
+        <th>Teilnehmen</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bezeichnung)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ort)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Datum)
+        </td>
+        <td>
+            @Html.ActionLink("Teilnehmen", "Teilnehmen", new { id=item.ID }) |
+        </td>
+    </tr>
+}
+
+</table>

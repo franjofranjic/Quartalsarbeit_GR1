@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Config>
+
+@{
+    ViewBag.Title = "Konfiguration";
+}
+
+<!-- TODO Side Tool mit Tab von Kategorien und Disziplinen -->
+
+@foreach (var config in Model)
+{
+    <h2>
+        @Html.DisplayFor(modelItem => config.Kategorie)
+
+    </h2>
+
+    foreach (var item in config.Disziplinen)
+    {
+        @Html.DisplayFor(modelItem => item.Bezeichnung)
+    }
+
+
+}
+
+<div class="sidebar">
+    <div>
+        @foreach (var discipline in Disciplines)
+        {
+            <div>
+                @Html.DisplayFor(discipline => discipline.Bezeichnung)
+            </div>
+        }
+    </div>
+    <div>
+        @foreach (var categorie in Categories)
+        {
+            <div>
+                @Html.DisplayFor(categorie => categorie.Bezeichnung)
+            </div>
+        }
+    </div>
+</div>
