@@ -304,6 +304,7 @@
     <Content Include="Views\Anlaesse\Teilnehmer.cshtml" />
     <Content Include="Views\Anlaesse\Statistik.cshtml" />
     <Content Include="Views\Anlaesse\Konfiguration.cshtml" />
+    <Content Include="Views\Vereine\Athleten.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

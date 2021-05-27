@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Quartalsarbeit_GR1.Models;
 using Newtonsoft.Json;
-
+using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
@@ -164,7 +164,8 @@ namespace Quartalsarbeit_GR1.Controllers
         {
             var athleten = db.Athleten.ToList();
             var teilnehmer = db.Teilnehmer.Where(e => e.Anlass.ID == id).ToList();
-            //ViewModel erstellen
+            //Todo der Teilnehmer besitzt auch Wahldisziplinen in einem zweiten Schritt
+
             var modelList = new List<TeilnehmerViewModel>();
 
             foreach (var athlet in athleten) {
@@ -172,7 +173,17 @@ namespace Quartalsarbeit_GR1.Controllers
                 {
                     athlet = athlet,
                     teilnahme = teilnehmer.Any(e => e.Athlet.ID == athlet.ID)
-                });
+                }) ;
+            } 
+
+            if (!User.IsInRole(RoleName.Administrator)) {
+                var userId = User.Identity.GetUserId();
+                Verein Verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
+                foreach (var model in modelList) {
+
+                    var vereinId = model.athlet;
+                }
+                var filteredModelList = modelList.Where(e => e.athlet.Verein.ID == Verein.ID).ToList();
             }
 
             return View(modelList);
@@ -185,9 +196,9 @@ namespace Quartalsarbeit_GR1.Controllers
             var categories = db.Kategorien.ToList();
             var disciplines = db.Disziplinen.ToList();
 
-            // Nach vorne geben alles
+            var tupleModel = new Tuple<List<Config>, List<Kategorie>, List<Disziplin>>(configs, categories, disciplines);
 
-            return View(configs);
+            return View(tupleModel);
         }
 
         // GET: Anlaesse/Startnummer/5
@@ -197,8 +208,6 @@ namespace Quartalsarbeit_GR1.Controllers
 
             return View();
         }
-
-
 
         protected override void Dispose(bool disposing)
         {

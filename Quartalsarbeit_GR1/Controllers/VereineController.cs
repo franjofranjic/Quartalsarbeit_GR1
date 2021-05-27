@@ -120,11 +120,16 @@ namespace Quartalsarbeit_GR1.Controllers
         // GET: Athleten/Index/5
         public ActionResult Athleten(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            return new AthletenController().Index(id);
+            else {
+                var verein = db.Vereine.Find(id);
+                var athletenVonVerein = db.Athleten.Where(e => e.Verein.ID == verein.ID).ToList();
+                return View("Athleten", athletenVonVerein);
+            }
         }
 
         protected override void Dispose(bool disposing)

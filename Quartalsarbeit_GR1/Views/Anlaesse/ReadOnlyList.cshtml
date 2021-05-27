@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Anlass>
 
 @{
-    ViewBag.Title = "Amlässe";
+    ViewBag.Title = "Anlässe";
 }
 
 <h2>Anlässe</h2>
@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.Datum)
         </td>
         <td>
-            @Html.ActionLink("Teilnehmen", "Teilnehmen", new { id=item.ID }) |
+            @Html.ActionLink("Teilnehmer", "Teilnehmer", new { id=item.ID }) |
         </td>
     </tr>
 }

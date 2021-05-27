@@ -17,23 +17,12 @@ namespace Quartalsarbeit_GR1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Athleten
-        public ActionResult Index(int? id)
+        public ActionResult Index()
         {
-            // richtig aufrufen bei id.HasValue
-                if (id.HasValue && User.IsInRole(RoleName.Administrator))
-                {
-                    var verein = db.Vereine.Find(id);
-                    var athletenVonVerein = db.Athleten.Where(e => e.Verein.ID == verein.ID).ToList();
-                    return View(athletenVonVerein);
-                }
-                else
-                {
-                    var userId = User.Identity.GetUserId();
-                    var verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
-                    var athletenVonVerein = db.Athleten.Where(e => e.Verein.ID == verein.ID).ToList(); 
-                    return View(athletenVonVerein);
-                }
-
+            var userId = User.Identity.GetUserId();
+            var verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
+            var athletenVonVerein = db.Athleten.Where(e => e.Verein.ID == verein.ID).ToList();
+            return View(athletenVonVerein);
         }
 
         // GET: Athleten/Details/5
