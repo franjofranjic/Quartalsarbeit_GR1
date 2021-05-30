@@ -1,5 +1,5 @@
 ﻿@using Quartalsarbeit_GR1.Models;
-@model Tuple<List<Config>, List<Kategorie>, List<Disziplin>>
+@model List<Config>
 
 @{
     ViewBag.Title = "Konfiguration";
@@ -9,38 +9,19 @@
 
 <h1>Konfiguration</h1>
 
-@foreach (Config config in Model.Item1)
+
+<p>
+    @Html.ActionLink("Kategorie hinzufügen", "addKategorie")
+</p>
+
+@foreach (Config config in Model)
 {
     <h2>
-       @config.Kategorie
-
+        @config.Kategorie.Bezeichnung
     </h2>
-
-    foreach (var item in config.Disziplinen)
-    {
-        @item.Bezeichnung
-    }
+    <h3>
+        @config.Disziplin.Bezeichnung
+    </h3>
 
 
 }
-
-<h1>Disziplinen & Kategorien</h1>
-
-<div class="sidebar">
-    <div>
-        @foreach (Disziplin discipline in Model.Item3)
-        {
-            <div>
-                @discipline.Bezeichnung
-            </div>
-        }
-    </div>
-    <div>
-        @foreach (Kategorie categorie in Model.Item2)
-        {
-            <div>
-                @categorie.Bezeichnung
-            </div>
-        }
-    </div>
-</div>

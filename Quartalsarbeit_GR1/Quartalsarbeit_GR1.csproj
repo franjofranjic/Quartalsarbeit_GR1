@@ -198,10 +198,15 @@
     <Compile Include="Migrations\202101030602281_DataToDB2.Designer.cs">
       <DependentUpon>202101030602281_DataToDB2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105281937599_configs.cs" />
+    <Compile Include="Migrations\202105281937599_configs.Designer.cs">
+      <DependentUpon>202105281937599_configs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Anlass.cs" />
     <Compile Include="Models\Athlet.cs" />
+    <Compile Include="Models\ConfigViewModel.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\Teilnehmer.cs" />
     <Compile Include="Models\Config.cs" />
@@ -305,6 +310,10 @@
     <Content Include="Views\Anlaesse\Statistik.cshtml" />
     <Content Include="Views\Anlaesse\Konfiguration.cshtml" />
     <Content Include="Views\Vereine\Athleten.cshtml" />
+    <Content Include="Views\Vereine\AthletEdit.cshtml" />
+    <Content Include="Views\Vereine\AthletDelete.cshtml" />
+    <Content Include="Views\Anlaesse\addKategorie.cshtml" />
+    <Content Include="Views\Vereine\AthletCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -331,6 +340,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101030602281_DataToDB2.resx">
       <DependentUpon>202101030602281_DataToDB2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105281937599_configs.resx">
+      <DependentUpon>202105281937599_configs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

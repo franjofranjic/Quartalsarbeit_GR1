@@ -6,35 +6,47 @@
 
 <h2>Teilnehmer</h2>
 
-<table class="table">
-    <tr>
-        <th>Teilnehmen</th>
-        <th>
-            @Html.DisplayNameFor(model => model.athlet.Vorname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.athlet.Nachname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.athlet.Verein)
-        </th>
-    </tr>
+@using (Html.BeginForm("SubmitTest"))
+{
+    <table class="table">
+        <tr>
+            <th>Teilnehmen</th>
+            <th>
+                @Html.DisplayNameFor(model => model.athlet.Vorname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.athlet.Nachname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.athlet.Verein)
+            </th>
+        </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.CheckBoxFor(modelItem => item.teilnahme)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.athlet.Vorname)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.athlet.Nachname)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.athlet.Verein.Vereinsname)
-    </td>
-</tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.teilnahme)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.athlet.Vorname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.athlet.Nachname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.athlet.Verein.Vereinsname)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Create" class="btn btn-default" onclick="SubmitForm(this)"/>
+        </div>
+    </div>
+
 }
 
-</table>

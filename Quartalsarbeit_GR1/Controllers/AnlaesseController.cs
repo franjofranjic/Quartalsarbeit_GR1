@@ -23,7 +23,8 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return View(db.Anlaesse.ToList());
             }
-            else {
+            else
+            {
                 return View("ReadOnlyList", db.Anlaesse.ToList());
             }
         }
@@ -126,7 +127,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // GET: Anlaesse/Statistik/
         public ActionResult Statistik(int? id)
         {
-            
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -155,8 +156,8 @@ namespace Quartalsarbeit_GR1.Controllers
             dataPoints.Add(new DataPoint("JMU18", 7));
             dataPoints.Add(new DataPoint("JMU16", 5));
             dataPoints.Add(new DataPoint("JMU14", 5));
-           
-            return View(dataPoints); 
+
+            return View(dataPoints);
         }
 
         // GET: Anlaesse/Teilnehmer/5
@@ -168,18 +169,21 @@ namespace Quartalsarbeit_GR1.Controllers
 
             var modelList = new List<TeilnehmerViewModel>();
 
-            foreach (var athlet in athleten) {
+            foreach (var athlet in athleten)
+            {
                 modelList.Add(new TeilnehmerViewModel
                 {
                     athlet = athlet,
                     teilnahme = teilnehmer.Any(e => e.Athlet.ID == athlet.ID)
-                }) ;
-            } 
+                });
+            }
 
-            if (!User.IsInRole(RoleName.Administrator)) {
+            if (!User.IsInRole(RoleName.Administrator))
+            {
                 var userId = User.Identity.GetUserId();
                 Verein Verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
-                foreach (var model in modelList) {
+                foreach (var model in modelList)
+                {
 
                     var vereinId = model.athlet;
                 }
@@ -192,19 +196,67 @@ namespace Quartalsarbeit_GR1.Controllers
         // GET: Anlaesse/Konfiguration/5
         public ActionResult Konfiguration(int? id)
         {
+            var test = db.Configs.ToList();
             var configs = db.Configs.Where(e => e.Anlass.ID == id).ToList();
-            var categories = db.Kategorien.ToList();
+            var groupedConfigs = configs.GroupBy(m => m.Kategorie).Select(grp => grp.ToList()).ToList();
+
+            return View(configs);
+        }
+
+        public ActionResult addKategorie(int? id)
+        {
             var disciplines = db.Disziplinen.ToList();
+            var configs = db.Configs.ToList();
+            var groupConfigs = configs.GroupBy(m => m.Kategorie).Select(grp => grp.Key).ToList();
+            var categories = db.Kategorien.ToList().Except(groupConfigs).ToList();
 
-            var tupleModel = new Tuple<List<Config>, List<Kategorie>, List<Disziplin>>(configs, categories, disciplines);
 
+            var tupleModel = new Tuple<List<Kategorie>, List<Disziplin>>(categories, disciplines);
             return View(tupleModel);
         }
+
+        // POST: Anlaesse/Addkategorie
+        // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
+        // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult addKategorie([Bind(Include = "ID,Anlass,Kategorie,Disziplin")] Config config)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Configs.Add(config);
+                db.SaveChanges();
+                return RedirectToAction("Konfiguration");
+            }
+
+            return View(config);
+        }
+
+        // POST: Anlaesse/Addkategorie
+        // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
+        // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Teilenehmer(List<Teilnehmer> teilnehmerList)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var teilnehmer in teilnehmerList) {
+                    db.Teilnehmer.Add(teilnehmer);
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(teilnehmerList);
+        }
+
+
 
         // GET: Anlaesse/Startnummer/5
         public ActionResult Startnummer(int? id)
         {
-             
+
 
             return View();
         }

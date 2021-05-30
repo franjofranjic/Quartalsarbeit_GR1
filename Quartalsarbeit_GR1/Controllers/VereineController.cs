@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Quartalsarbeit_GR1.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
@@ -130,6 +131,90 @@ namespace Quartalsarbeit_GR1.Controllers
                 var athletenVonVerein = db.Athleten.Where(e => e.Verein.ID == verein.ID).ToList();
                 return View("Athleten", athletenVonVerein);
             }
+        }
+
+        // GET: Vereine/Delete/5
+        public ActionResult AthletDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Athlet athlet = db.Athleten.Find(id);
+            if (athlet == null)
+            {
+                return HttpNotFound();
+            }
+            return View(athlet);
+        }
+
+        // POST: Athleten/Delete/5
+        [HttpPost, ActionName("AthletDelete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AthletDeleteConfirmed(int id)
+        {
+            Athlet athlet = db.Athleten.Find(id);
+            db.Athleten.Remove(athlet);
+            db.SaveChanges();
+            return RedirectToAction("Athleten");
+        }
+
+        // POST: Vereine/Edit/5
+        // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
+        // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AthletEdit([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlet athlet)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(athlet).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Athleten");
+            }
+            return View(athlet);
+        }
+
+        // GET: Athleten/Create
+        public ActionResult AthletEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Athlet athlet = db.Athleten.Find(id);
+            if (athlet == null)
+            {
+                return HttpNotFound();
+            }
+            return View(athlet);
+        }
+
+        // GET: Athleten/Create
+        public ActionResult AthletCreate()
+        {
+            return View();
+        }
+
+        // POST: Athleten/Create
+        // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
+        // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AthletCreate([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlet athlet)
+        {
+            if (ModelState.IsValid)
+            {
+                // Hardcoded Ya Salame
+                var vereinsId = 7;
+                var Verein = db.Vereine.Where(c => c.ID == vereinsId).FirstOrDefault();
+                athlet.Verein = Verein;
+                db.Athleten.Add(athlet);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(athlet);
         }
 
         protected override void Dispose(bool disposing)

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Models
 {
-    public class Config
+    public class ConfigViewModel
     {
         public int ID { get; set; }
 
@@ -13,6 +13,6 @@ namespace Quartalsarbeit_GR1.Models
 
         public Kategorie Kategorie { get; set; }
 
-        public Disziplin Disziplin { get; set; }
+        public List<Disziplin> Disziplin { get; set; }
     }
 }
