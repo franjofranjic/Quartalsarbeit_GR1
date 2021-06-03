@@ -253,12 +253,43 @@ namespace Quartalsarbeit_GR1.Controllers
 
 
 
-        // GET: Anlaesse/Startnummer/5
-        public ActionResult Startnummer(int? id)
+        // GET: Anlaesse/Startnummeblockr/5
+        public ActionResult Startnummernblock(int? id)
         {
+            Startnummernblock startnummernblock = db.Startnummernblock.Where(e => e.anlass.ID == id).First();
+            return View(startnummernblock);
+        }
 
+        // GET: Anlaesse/Startnummeblockr/5
+        public ActionResult StartnummernblockEdit(int? id)
+        {
+            
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Startnummernblock startnummernblock = db.Startnummernblock.Where(e => e.anlass.ID == id).First();
+            if (startnummernblock == null)
+            {
+                return HttpNotFound();
+            }
+            return View(startnummernblock);
+        }
 
-            return View();
+        // POST: Anlaesse/Edit/5
+        // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
+        // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StartnummernblockEdit([Bind(Include = "ID,minStartnummer,maxStartnummer,gruppierung,differenz")] Startnummernblock startnummernblock)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(startnummernblock).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(startnummernblock);
         }
 
         protected override void Dispose(bool disposing)

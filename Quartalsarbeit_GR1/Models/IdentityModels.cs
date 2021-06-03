@@ -44,6 +44,7 @@ namespace Quartalsarbeit_GR1.Models
         public DbSet<Anlass> Anlaesse { get; set; }
         public DbSet<Config> Configs { get; set; }
         public DbSet<Teilnehmer> Teilnehmer { get; set; }
+        public DbSet<Startnummernblock> Startnummernblock { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

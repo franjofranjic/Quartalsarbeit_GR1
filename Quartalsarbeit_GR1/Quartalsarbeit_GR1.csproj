@@ -202,8 +202,13 @@
     <Compile Include="Migrations\202105281937599_configs.Designer.cs">
       <DependentUpon>202105281937599_configs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105311828444_Startnummernblock.cs" />
+    <Compile Include="Migrations\202105311828444_Startnummernblock.Designer.cs">
+      <DependentUpon>202105311828444_Startnummernblock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Startnummernblock.cs" />
     <Compile Include="Models\Anlass.cs" />
     <Compile Include="Models\Athlet.cs" />
     <Compile Include="Models\ConfigViewModel.cs" />
@@ -235,6 +240,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bloodhound.js" />
+    <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\FontAwesome.otf" />
@@ -314,6 +321,8 @@
     <Content Include="Views\Vereine\AthletDelete.cshtml" />
     <Content Include="Views\Anlaesse\addKategorie.cshtml" />
     <Content Include="Views\Vereine\AthletCreate.cshtml" />
+    <Content Include="Views\Anlaesse\Startnummernblock.cshtml" />
+    <Content Include="Views\Anlaesse\StartnummernblockEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -343,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105281937599_configs.resx">
       <DependentUpon>202105281937599_configs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105311828444_Startnummernblock.resx">
+      <DependentUpon>202105311828444_Startnummernblock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
