@@ -10,108 +10,107 @@ using Quartalsarbeit_GR1.Models;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
-    [Authorize(Roles = RoleName.Administrator)]
-    public class DisziplinenController : Controller
+    public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Disziplinen
+        // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Disziplinen.ToList());
+            return View(db.Categories.ToList());
         }
 
-        // GET: Disziplinen/Details/5
+        // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Disziplin disziplin = db.Disziplinen.Find(id);
-            if (disziplin == null)
+            Category kategorie = db.Categories.Find(id);
+            if (kategorie == null)
             {
                 return HttpNotFound();
             }
-            return View(disziplin);
+            return View(kategorie);
         }
 
-        // GET: Disziplinen/Create
+        // GET: Categories/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Disziplinen/Create
+        // POST: Categories/Create
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Bezeichnung,Abkuerzung,Formel")] Disziplin disziplin)
+        public ActionResult Create([Bind(Include = "ID,Bezeichnung,MinAlter,MaxAlter,Geschlecht")] Category kategorie)
         {
             if (ModelState.IsValid)
             {
-                db.Disziplinen.Add(disziplin);
+                db.Categories.Add(kategorie);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(disziplin);
+            return View(kategorie);
         }
 
-        // GET: Disziplinen/Edit/5
+        // GET: Categories/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Disziplin disziplin = db.Disziplinen.Find(id);
-            if (disziplin == null)
+            Category kategorie = db.Categories.Find(id);
+            if (kategorie == null)
             {
                 return HttpNotFound();
             }
-            return View(disziplin);
+            return View(kategorie);
         }
 
-        // POST: Disziplinen/Edit/5
+        // POST: Categories/Edit/5
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Bezeichnung,Abkuerzung,Formel")] Disziplin disziplin)
+        public ActionResult Edit([Bind(Include = "ID,Bezeichnung,MinAlter,MaxAlter,Geschlecht")] Category kategorie)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(disziplin).State = EntityState.Modified;
+                db.Entry(kategorie).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(disziplin);
+            return View(kategorie);
         }
 
-        // GET: Disziplinen/Delete/5
+        // GET: Categories/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Disziplin disziplin = db.Disziplinen.Find(id);
-            if (disziplin == null)
+            Category kategorie = db.Categories.Find(id);
+            if (kategorie == null)
             {
                 return HttpNotFound();
             }
-            return View(disziplin);
+            return View(kategorie);
         }
 
-        // POST: Disziplinen/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Disziplin disziplin = db.Disziplinen.Find(id);
-            db.Disziplinen.Remove(disziplin);
+            Category kategorie = db.Categories.Find(id);
+            db.Categories.Remove(kategorie);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

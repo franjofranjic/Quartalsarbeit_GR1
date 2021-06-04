@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
-    public class VereineController : Controller
+    public class ClubsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -29,7 +29,7 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Verein verein = db.Vereine.Find(id);
+            Club verein = db.Vereine.Find(id);
             if (verein == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Vereinsname,Ort,PLZ,Strasse")] Verein verein)
+        public ActionResult Create([Bind(Include = "ID,Vereinsname,Ort,PLZ,Strasse")] Club verein)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Verein verein = db.Vereine.Find(id);
+            Club verein = db.Vereine.Find(id);
             if (verein == null)
             {
                 return HttpNotFound();
@@ -80,7 +80,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Vereinsname,Ort,PLZ,Strasse,Vereinsveratnwortlicher")] Verein verein)
+        public ActionResult Edit([Bind(Include = "ID,Vereinsname,Ort,PLZ,Strasse,Vereinsveratnwortlicher")] Club verein)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Verein verein = db.Vereine.Find(id);
+            Club verein = db.Vereine.Find(id);
             if (verein == null)
             {
                 return HttpNotFound();
@@ -112,14 +112,14 @@ namespace Quartalsarbeit_GR1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Verein verein = db.Vereine.Find(id);
+            Club verein = db.Vereine.Find(id);
             db.Vereine.Remove(verein);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        // GET: Athleten/Index/5
-        public ActionResult Athleten(int? id)
+        // GET: Athletes/Index/5
+        public ActionResult Athletes(int? id)
         {
 
             if (id == null)
@@ -128,8 +128,8 @@ namespace Quartalsarbeit_GR1.Controllers
             }
             else {
                 var verein = db.Vereine.Find(id);
-                var athletenVonVerein = db.Athleten.Where(e => e.Verein.ID == verein.ID).ToList();
-                return View("Athleten", athletenVonVerein);
+                var athletenVonVerein = db.Athletes.Where(e => e.Verein.ID == verein.ID).ToList();
+                return View("Athletes", athletenVonVerein);
             }
         }
 
@@ -140,7 +140,7 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Athlet athlet = db.Athleten.Find(id);
+            Athlete athlet = db.Athletes.Find(id);
             if (athlet == null)
             {
                 return HttpNotFound();
@@ -148,15 +148,15 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(athlet);
         }
 
-        // POST: Athleten/Delete/5
+        // POST: Athletes/Delete/5
         [HttpPost, ActionName("AthletDelete")]
         [ValidateAntiForgeryToken]
         public ActionResult AthletDeleteConfirmed(int id)
         {
-            Athlet athlet = db.Athleten.Find(id);
-            db.Athleten.Remove(athlet);
+            Athlete athlet = db.Athletes.Find(id);
+            db.Athletes.Remove(athlet);
             db.SaveChanges();
-            return RedirectToAction("Athleten");
+            return RedirectToAction("Athletes");
         }
 
         // POST: Vereine/Edit/5
@@ -164,25 +164,25 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AthletEdit([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlet athlet)
+        public ActionResult AthletEdit([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlete athlet)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(athlet).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Athleten");
+                return RedirectToAction("Athletes");
             }
             return View(athlet);
         }
 
-        // GET: Athleten/Create
+        // GET: Athletes/Create
         public ActionResult AthletEdit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Athlet athlet = db.Athleten.Find(id);
+            Athlete athlet = db.Athletes.Find(id);
             if (athlet == null)
             {
                 return HttpNotFound();
@@ -190,18 +190,18 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(athlet);
         }
 
-        // GET: Athleten/Create
+        // GET: Athletes/Create
         public ActionResult AthletCreate()
         {
             return View();
         }
 
-        // POST: Athleten/Create
+        // POST: Athletes/Create
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AthletCreate([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlet athlet)
+        public ActionResult AthletCreate([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlete athlet)
         {
             if (ModelState.IsValid)
             {
@@ -209,7 +209,7 @@ namespace Quartalsarbeit_GR1.Controllers
                 var vereinsId = 7;
                 var Verein = db.Vereine.Where(c => c.ID == vereinsId).FirstOrDefault();
                 athlet.Verein = Verein;
-                db.Athleten.Add(athlet);
+                db.Athletes.Add(athlet);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

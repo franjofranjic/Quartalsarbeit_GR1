@@ -8,8 +8,15 @@ namespace Quartalsarbeit_GR1
         // Weitere Informationen zur Bündelung finden Sie unter https://go.microsoft.com/fwlink/?LinkId=301862.
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                         "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/scripts/bootbox.js",
+                        "~/Scripts/respond.js",
+                        "~/scripts/datatables/jquery.datatables.js",
+                        "~/scripts/datatables/datatables.bootstrap.js",
+                        "~/scripts/typeahead.bundle.js",
+                        "~/scripts/toastr.js",
                         "~/Scripts/jquery.mCustomScrollbar*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -20,11 +27,10 @@ namespace Quartalsarbeit_GR1
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
-
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
+                      "~/Content/bootstrap-theme.css",
+                      "~/content/datatables/css/datatables.bootstrap.css",
                       "~/Content/bootstrap.css",
                       "~/Content/nav.css",
                       "~/Content/site.css"));

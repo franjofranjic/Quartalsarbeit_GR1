@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Quartalsarbeit_GR1.Models
+namespace Quartalsarbeit_GR1.Dtos
 {
-    public class Athlet
+    public class AthleteDto
     {
         public int ID { get; set; }
 
@@ -13,15 +13,14 @@ namespace Quartalsarbeit_GR1.Models
 
         public String Nachname { get; set; }
 
-        public Verein Verein { get; set; }
+        public ClubDto Club { get; set; }
 
         public DateTime Geburtstag { get; set; }
 
-        public Geschlecht Geschlecht { get; set; }
+        public String Geschlecht { get; set; }
 
         public int Gewicht { get; set; }
 
         public int Groesse { get; set; }
-
     }
 }

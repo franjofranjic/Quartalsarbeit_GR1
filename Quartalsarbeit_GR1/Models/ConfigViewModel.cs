@@ -9,10 +9,10 @@ namespace Quartalsarbeit_GR1.Models
     {
         public int ID { get; set; }
 
-        public Anlass Anlass { get; set; }
+        public Event Anlass { get; set; }
 
-        public Kategorie Kategorie { get; set; }
+        public Category Kategorie { get; set; }
 
-        public List<Disziplin> Disziplin { get; set; }
+        public List<Discipline> Disziplin { get; set; }
     }
 }

@@ -45,10 +45,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.0\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -56,6 +62,12 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -170,19 +182,31 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\FontAwesomeBundleConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AnlaesseController.cs" />
-    <Compile Include="Controllers\AthletenController.cs" />
-    <Compile Include="Controllers\DisziplinenController.cs" />
+    <Compile Include="Controllers\api\AthletesController.cs" />
+    <Compile Include="Controllers\api\CategoriesController.cs" />
+    <Compile Include="Controllers\api\ClubsController.cs" />
+    <Compile Include="Controllers\api\EventsController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
+    <Compile Include="Controllers\api\DisciplinesController.cs" />
+    <Compile Include="Controllers\AthletesController.cs" />
+    <Compile Include="Controllers\DisciplinesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\KategorienController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\VereineController.cs" />
-    <Compile Include="Dtos\AnlassDto.cs" />
-    <Compile Include="Dtos\AthletDto.cs" />
-    <Compile Include="Dtos\VereinDto.cs" />
+    <Compile Include="Controllers\ClubsController.cs" />
+    <Compile Include="Dtos\StartNumberConfigurationDto.cs" />
+    <Compile Include="Dtos\ParticipantDto.cs" />
+    <Compile Include="Dtos\ConfigurationDto.cs" />
+    <Compile Include="Dtos\CategoryDto.cs" />
+    <Compile Include="Dtos\DisciplineDto.cs" />
+    <Compile Include="Dtos\EventDto.cs" />
+    <Compile Include="Dtos\AthleteDto.cs" />
+    <Compile Include="Dtos\ClubDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -206,22 +230,26 @@
     <Compile Include="Migrations\202105311828444_Startnummernblock.Designer.cs">
       <DependentUpon>202105311828444_Startnummernblock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106031756580_rename.cs" />
+    <Compile Include="Migrations\202106031756580_rename.Designer.cs">
+      <DependentUpon>202106031756580_rename.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Startnummernblock.cs" />
-    <Compile Include="Models\Anlass.cs" />
-    <Compile Include="Models\Athlet.cs" />
+    <Compile Include="Models\StartNumberConfiguration.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Athlete.cs" />
     <Compile Include="Models\ConfigViewModel.cs" />
     <Compile Include="Models\DataPoint.cs" />
-    <Compile Include="Models\Teilnehmer.cs" />
-    <Compile Include="Models\Config.cs" />
-    <Compile Include="Models\Disziplin.cs" />
+    <Compile Include="Models\Participant.cs" />
+    <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Models\Discipline.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\Kategorie.cs" />
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RoleName.cs" />
     <Compile Include="Models\TeilnehmerViewModel.cs" />
-    <Compile Include="Models\Verein.cs" />
+    <Compile Include="Models\Club.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -295,34 +323,34 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Athleten\Create.cshtml" />
-    <Content Include="Views\Athleten\Delete.cshtml" />
-    <Content Include="Views\Athleten\Details.cshtml" />
-    <Content Include="Views\Athleten\Edit.cshtml" />
-    <Content Include="Views\Disziplinen\Index.cshtml" />
-    <Content Include="Views\Kategorien\Index.cshtml" />
-    <Content Include="Views\Vereine\Delete.cshtml" />
-    <Content Include="Views\Vereine\Edit.cshtml" />
-    <Content Include="Views\Vereine\Index.cshtml" />
-    <Content Include="Views\Anlaesse\Create.cshtml" />
-    <Content Include="Views\Anlaesse\Delete.cshtml" />
-    <Content Include="Views\Anlaesse\Edit.cshtml" />
-    <Content Include="Views\Anlaesse\Index.cshtml" />
+    <Content Include="Views\Athletes\Create.cshtml" />
+    <Content Include="Views\Athletes\Delete.cshtml" />
+    <Content Include="Views\Athletes\Details.cshtml" />
+    <Content Include="Views\Athletes\Edit.cshtml" />
+    <Content Include="Views\Disciplines\Index.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Clubs\Delete.cshtml" />
+    <Content Include="Views\Clubs\Edit.cshtml" />
+    <Content Include="Views\Clubs\Index.cshtml" />
+    <Content Include="Views\Events\Create.cshtml" />
+    <Content Include="Views\Events\Delete.cshtml" />
+    <Content Include="Views\Events\Edit.cshtml" />
+    <Content Include="Views\Events\Index.cshtml" />
     <Content Include="Views\Shared\_Nav.cshtml" />
-    <Content Include="Views\Anlaesse\ReadOnlyList.cshtml" />
+    <Content Include="Views\Events\ReadOnlyList.cshtml" />
     <Content Include="Views\Manage\Edit.cshtml" />
-    <Content Include="Views\Athleten\Index.cshtml" />
-    <Content Include="Views\Anlaesse\Config.cshtml" />
-    <Content Include="Views\Anlaesse\Teilnehmer.cshtml" />
-    <Content Include="Views\Anlaesse\Statistik.cshtml" />
-    <Content Include="Views\Anlaesse\Konfiguration.cshtml" />
-    <Content Include="Views\Vereine\Athleten.cshtml" />
-    <Content Include="Views\Vereine\AthletEdit.cshtml" />
-    <Content Include="Views\Vereine\AthletDelete.cshtml" />
-    <Content Include="Views\Anlaesse\addKategorie.cshtml" />
-    <Content Include="Views\Vereine\AthletCreate.cshtml" />
-    <Content Include="Views\Anlaesse\Startnummernblock.cshtml" />
-    <Content Include="Views\Anlaesse\StartnummernblockEdit.cshtml" />
+    <Content Include="Views\Athletes\Index.cshtml" />
+    <Content Include="Views\Events\Config.cshtml" />
+    <Content Include="Views\Events\Teilnehmer.cshtml" />
+    <Content Include="Views\Events\Statistik.cshtml" />
+    <Content Include="Views\Events\Konfiguration.cshtml" />
+    <Content Include="Views\Clubs\Athleten.cshtml" />
+    <Content Include="Views\Clubs\AthletEdit.cshtml" />
+    <Content Include="Views\Clubs\AthletDelete.cshtml" />
+    <Content Include="Views\Events\addKategorie.cshtml" />
+    <Content Include="Views\Clubs\AthletCreate.cshtml" />
+    <Content Include="Views\Events\Startnummernblock.cshtml" />
+    <Content Include="Views\Events\StartnummernblockEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -355,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105311828444_Startnummernblock.resx">
       <DependentUpon>202105311828444_Startnummernblock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106031756580_rename.resx">
+      <DependentUpon>202106031756580_rename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

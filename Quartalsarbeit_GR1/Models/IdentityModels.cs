@@ -37,14 +37,14 @@ namespace Quartalsarbeit_GR1.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Disziplin> Disziplinen { get; set; }
-        public DbSet<Kategorie> Kategorien { get; set; }
-        public DbSet<Verein> Vereine { get; set; }
-        public DbSet<Athlet> Athleten { get; set; }
-        public DbSet<Anlass> Anlaesse { get; set; }
-        public DbSet<Config> Configs { get; set; }
-        public DbSet<Teilnehmer> Teilnehmer { get; set; }
-        public DbSet<Startnummernblock> Startnummernblock { get; set; }
+        public DbSet<Discipline> Disciplines { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Club> Vereine { get; set; }
+        public DbSet<Athlete> Athletes { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<Participant> Participants { get; set; }
+        public DbSet<StartNumberConfiguration> StartNumberConfigurations { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

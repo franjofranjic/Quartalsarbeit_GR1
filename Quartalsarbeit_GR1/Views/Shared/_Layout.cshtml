@@ -30,15 +30,15 @@
                 @if (User.IsInRole(RoleName.Administrator))
                 {
 
-                    <li>@Html.ActionLink("Kategorien", "Index", "Kategorien")</li>
-                    <li>@Html.ActionLink("Disziplinen", "Index", "Disziplinen")</li>
-                    <li>@Html.ActionLink("Vereine", "Index", "Vereine")</li>
-                    <li>@Html.ActionLink("Anlässe", "Index", "Anlaesse")</li>
+                    <li>@Html.ActionLink("Kategorien", "Index", "Categories")</li>
+                    <li>@Html.ActionLink("Disziplinen", "Index", "Disciplines")</li>
+                    <li>@Html.ActionLink("Vereine", "Index", "Clubs")</li>
+                    <li>@Html.ActionLink("Anlässe", "Index", "Events")</li>
                 }
                 else
                 {
-                    <li>@Html.ActionLink("Anlässe", "Index", "Anlaesse")</li>
-                    <li>@Html.ActionLink("Athleten", "Index", "Athleten")</li>
+                    <li>@Html.ActionLink("Anlässe", "Index", "Events")</li>
+                    <li>@Html.ActionLink("Athleten", "Index", "Athletes")</li>
                 }
 
             </ul>

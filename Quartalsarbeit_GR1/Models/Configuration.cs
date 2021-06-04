@@ -5,13 +5,14 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Models
 {
-    public class Disziplin
+    public class Configuration
     {
         public int ID { get; set; }
-        public String Bezeichnung { get; set; }
 
-        public String Abkuerzung { get; set; }
+        public Event Anlass { get; set; }
 
-        public String Formel { get; set; }
+        public Category Kategorie { get; set; }
+
+        public Discipline Disziplin { get; set; }
     }
 }

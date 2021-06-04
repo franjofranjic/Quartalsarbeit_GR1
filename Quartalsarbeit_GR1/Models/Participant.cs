@@ -5,13 +5,13 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Models
 {
-    public class Teilnehmer
+    public class Participant
     {
         public int ID { get; set; }
 
-        public Anlass Anlass { get; set; }
+        public Event Anlass { get; set; }
 
-        public Athlet Athlet { get; set; }
+        public Athlete Athlet { get; set; }
 
         //Startnummerblock hmmmm
         public int Startnummer { get; set; }

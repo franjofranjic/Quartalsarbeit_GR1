@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Dtos
 {
-    public class AnlassDto
+    public class DisciplineDto
     {
     }
 }

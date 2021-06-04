@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Models
 {
-    public class Startnummernblock
+    public class StartNumberConfiguration
     {
         public int ID { get; set; }
 
@@ -14,6 +14,6 @@ namespace Quartalsarbeit_GR1.Models
         public String gruppierung { get; set; }
         public int differenz { get; set; }
 
-        public Anlass anlass { get; set; }
+        public Event anlass { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Models
 {
-    public class Verein
+    public class Club
     {
         public int ID { get; set; }
 
@@ -19,6 +19,6 @@ namespace Quartalsarbeit_GR1.Models
 
         public ApplicationUser Vereinsverantwortlicher { get; set; }
 
-        public ICollection<Athlet> Athleten { get; set; }
+        public ICollection<Athlete> Athleten { get; set; }
     }
 }

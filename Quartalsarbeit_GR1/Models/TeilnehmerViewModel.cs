@@ -7,7 +7,7 @@ namespace Quartalsarbeit_GR1.Models
 {
     public class TeilnehmerViewModel
     {
-        public Athlet athlet { get; set; }
+        public Athlete athlet { get; set; }
 
         public Boolean teilnahme { get; set; }
     }

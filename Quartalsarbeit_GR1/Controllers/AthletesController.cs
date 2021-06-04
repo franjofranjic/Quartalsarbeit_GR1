@@ -7,110 +7,118 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Quartalsarbeit_GR1.Models;
+using Microsoft.AspNet.Identity;
+
 
 namespace Quartalsarbeit_GR1.Controllers
 {
-    public class KategorienController : Controller
+    public class AthletesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Kategorien
+        // GET: Athletes
         public ActionResult Index()
         {
-            return View(db.Kategorien.ToList());
+            var userId = User.Identity.GetUserId();
+            var verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
+            var athletenVonVerein = db.Athletes.Where(e => e.Verein.ID == verein.ID).ToList();
+            return View(athletenVonVerein);
         }
 
-        // GET: Kategorien/Details/5
+        // GET: Athletes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kategorie kategorie = db.Kategorien.Find(id);
-            if (kategorie == null)
+            Athlete athlet = db.Athletes.Find(id);
+            if (athlet == null)
             {
                 return HttpNotFound();
             }
-            return View(kategorie);
+            return View(athlet);
         }
 
-        // GET: Kategorien/Create
+        // GET: Athletes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Kategorien/Create
+        // POST: Athletes/Create
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Bezeichnung,MinAlter,MaxAlter,Geschlecht")] Kategorie kategorie)
+        public ActionResult Create([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlete athlet)
         {
             if (ModelState.IsValid)
             {
-                db.Kategorien.Add(kategorie);
+                var userId = User.Identity.GetUserId();
+                var Verein =  db.Vereine.Where(c => c.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
+                athlet.Verein = Verein;
+                db.Athletes.Add(athlet);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(kategorie);
+            return View(athlet);
         }
 
-        // GET: Kategorien/Edit/5
+        // GET: Athletes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kategorie kategorie = db.Kategorien.Find(id);
-            if (kategorie == null)
+            Athlete athlet = db.Athletes.Find(id);
+            if (athlet == null)
             {
                 return HttpNotFound();
             }
-            return View(kategorie);
+            return View(athlet);
         }
 
-        // POST: Kategorien/Edit/5
+        // POST: Athletes/Edit/5
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Bezeichnung,MinAlter,MaxAlter,Geschlecht")] Kategorie kategorie)
+        public ActionResult Edit([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlete athlet)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(kategorie).State = EntityState.Modified;
+                db.Entry(athlet).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(kategorie);
+            return View(athlet);
         }
 
-        // GET: Kategorien/Delete/5
+        // GET: Athletes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kategorie kategorie = db.Kategorien.Find(id);
-            if (kategorie == null)
+            Athlete athlet = db.Athletes.Find(id);
+            if (athlet == null)
             {
                 return HttpNotFound();
             }
-            return View(kategorie);
+            return View(athlet);
         }
 
-        // POST: Kategorien/Delete/5
+        // POST: Athletes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Kategorie kategorie = db.Kategorien.Find(id);
-            db.Kategorien.Remove(kategorie);
+            Athlete athlet = db.Athletes.Find(id);
+            db.Athletes.Remove(athlet);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

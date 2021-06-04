@@ -12,31 +12,31 @@ using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
-    public class AnlaesseController : Controller
+    public class EventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Anlaesse
+        // GET: Events
         public ActionResult Index()
         {
             if (User.IsInRole(RoleName.Administrator))
             {
-                return View(db.Anlaesse.ToList());
+                return View(db.Events.ToList());
             }
             else
             {
-                return View("ReadOnlyList", db.Anlaesse.ToList());
+                return View("ReadOnlyList", db.Events.ToList());
             }
         }
 
-        // GET: Anlaesse/Details/5
+        // GET: Events/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Anlass anlass = db.Anlaesse.Find(id);
+            Event anlass = db.Events.Find(id);
             if (anlass == null)
             {
                 return HttpNotFound();
@@ -44,22 +44,22 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(anlass);
         }
 
-        // GET: Anlaesse/Create
+        // GET: Events/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Anlaesse/Create
+        // POST: Events/Create
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Bezeichnung,Ort,Datum")] Anlass anlass)
+        public ActionResult Create([Bind(Include = "ID,Bezeichnung,Ort,Datum")] Event anlass)
         {
             if (ModelState.IsValid)
             {
-                db.Anlaesse.Add(anlass);
+                db.Events.Add(anlass);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -67,14 +67,14 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(anlass);
         }
 
-        // GET: Anlaesse/Edit/5
+        // GET: Events/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Anlass anlass = db.Anlaesse.Find(id);
+            Event anlass = db.Events.Find(id);
             if (anlass == null)
             {
                 return HttpNotFound();
@@ -82,12 +82,12 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(anlass);
         }
 
-        // POST: Anlaesse/Edit/5
+        // POST: Events/Edit/5
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Bezeichnung,Ort,Datum")] Anlass anlass)
+        public ActionResult Edit([Bind(Include = "ID,Bezeichnung,Ort,Datum")] Event anlass)
         {
             if (ModelState.IsValid)
             {
@@ -98,14 +98,14 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(anlass);
         }
 
-        // GET: Anlaesse/Delete/5
+        // GET: Events/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Anlass anlass = db.Anlaesse.Find(id);
+            Event anlass = db.Events.Find(id);
             if (anlass == null)
             {
                 return HttpNotFound();
@@ -113,18 +113,18 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(anlass);
         }
 
-        // POST: Anlaesse/Delete/5
+        // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Anlass anlass = db.Anlaesse.Find(id);
-            db.Anlaesse.Remove(anlass);
+            Event anlass = db.Events.Find(id);
+            db.Events.Remove(anlass);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        // GET: Anlaesse/Statistik/
+        // GET: Events/Statistik/
         public ActionResult Statistik(int? id)
         {
 
@@ -134,9 +134,9 @@ namespace Quartalsarbeit_GR1.Controllers
             }
             List<DataPoint> dataPoints = new List<DataPoint>();
             /*
-            Anlass anlass = db.Anlaesse.Find(id);
-            var teilnehmer = anlass.Teilnehmer;
-            var config = anlass.Configs;
+            Anlass anlass = db.Events.Find(id);
+            var teilnehmer = anlass.Participants;
+            var config = anlass.Configurations;
 
             
             foreach (var configItem in config) {
@@ -160,12 +160,12 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(dataPoints);
         }
 
-        // GET: Anlaesse/Teilnehmer/5
-        public ActionResult Teilnehmer(int? id)
+        // GET: Events/Participants/5
+        public ActionResult Participants(int? id)
         {
-            var athleten = db.Athleten.ToList();
-            var teilnehmer = db.Teilnehmer.Where(e => e.Anlass.ID == id).ToList();
-            //Todo der Teilnehmer besitzt auch Wahldisziplinen in einem zweiten Schritt
+            var athleten = db.Athletes.ToList();
+            var teilnehmer = db.Participants.Where(e => e.Anlass.ID == id).ToList();
+            //Todo der Participants besitzt auch Wahldisziplinen in einem zweiten Schritt
 
             var modelList = new List<TeilnehmerViewModel>();
 
@@ -181,7 +181,7 @@ namespace Quartalsarbeit_GR1.Controllers
             if (!User.IsInRole(RoleName.Administrator))
             {
                 var userId = User.Identity.GetUserId();
-                Verein Verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
+                Club Verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
                 foreach (var model in modelList)
                 {
 
@@ -193,38 +193,38 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(modelList);
         }
 
-        // GET: Anlaesse/Konfiguration/5
+        // GET: Events/Konfiguration/5
         public ActionResult Konfiguration(int? id)
         {
-            var test = db.Configs.ToList();
-            var configs = db.Configs.Where(e => e.Anlass.ID == id).ToList();
-            var groupedConfigs = configs.GroupBy(m => m.Kategorie).Select(grp => grp.ToList()).ToList();
+            var test = db.Configurations.ToList();
+            var configs = db.Configurations.Where(e => e.Anlass.ID == id).ToList();
+            var groupedConfigurations = configs.GroupBy(m => m.Kategorie).Select(grp => grp.ToList()).ToList();
 
             return View(configs);
         }
 
         public ActionResult addKategorie(int? id)
         {
-            var disciplines = db.Disziplinen.ToList();
-            var configs = db.Configs.ToList();
-            var groupConfigs = configs.GroupBy(m => m.Kategorie).Select(grp => grp.Key).ToList();
-            var categories = db.Kategorien.ToList().Except(groupConfigs).ToList();
+            var disciplines = db.Disciplines.ToList();
+            var configs = db.Configurations.ToList();
+            var groupConfigurations = configs.GroupBy(m => m.Kategorie).Select(grp => grp.Key).ToList();
+            var categories = db.Categories.ToList().Except(groupConfigurations).ToList();
 
 
-            var tupleModel = new Tuple<List<Kategorie>, List<Disziplin>>(categories, disciplines);
+            var tupleModel = new Tuple<List<Category>, List<Discipline>>(categories, disciplines);
             return View(tupleModel);
         }
 
-        // POST: Anlaesse/Addkategorie
+        // POST: Events/Addkategorie
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult addKategorie([Bind(Include = "ID,Anlass,Kategorie,Disziplin")] Config config)
+        public ActionResult addKategorie([Bind(Include = "ID,Anlass,Kategorie,Disziplin")] Configuration config)
         {
             if (ModelState.IsValid)
             {
-                db.Configs.Add(config);
+                db.Configurations.Add(config);
                 db.SaveChanges();
                 return RedirectToAction("Konfiguration");
             }
@@ -232,17 +232,17 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(config);
         }
 
-        // POST: Anlaesse/Addkategorie
+        // POST: Events/Addkategorie
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Teilenehmer(List<Teilnehmer> teilnehmerList)
+        public ActionResult Teilenehmer(List<Participant> teilnehmerList)
         {
             if (ModelState.IsValid)
             {
                 foreach (var teilnehmer in teilnehmerList) {
-                    db.Teilnehmer.Add(teilnehmer);
+                    db.Participants.Add(teilnehmer);
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -253,22 +253,22 @@ namespace Quartalsarbeit_GR1.Controllers
 
 
 
-        // GET: Anlaesse/Startnummeblockr/5
-        public ActionResult Startnummernblock(int? id)
+        // GET: Events/Startnummeblockr/5
+        public ActionResult StartNumberConfigurations(int? id)
         {
-            Startnummernblock startnummernblock = db.Startnummernblock.Where(e => e.anlass.ID == id).First();
+            StartNumberConfiguration startnummernblock = db.StartNumberConfigurations.Where(e => e.anlass.ID == id).First();
             return View(startnummernblock);
         }
 
-        // GET: Anlaesse/Startnummeblockr/5
-        public ActionResult StartnummernblockEdit(int? id)
+        // GET: Events/Startnummeblockr/5
+        public ActionResult StartNumberConfigurationsEdit(int? id)
         {
             
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Startnummernblock startnummernblock = db.Startnummernblock.Where(e => e.anlass.ID == id).First();
+            StartNumberConfiguration startnummernblock = db.StartNumberConfigurations.Where(e => e.anlass.ID == id).First();
             if (startnummernblock == null)
             {
                 return HttpNotFound();
@@ -276,12 +276,12 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(startnummernblock);
         }
 
-        // POST: Anlaesse/Edit/5
+        // POST: Events/Edit/5
         // Aktivieren Sie zum Schutz vor Angriffen durch Overposting die jeweiligen Eigenschaften, mit denen eine Bindung erfolgen soll. 
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StartnummernblockEdit([Bind(Include = "ID,minStartnummer,maxStartnummer,gruppierung,differenz")] Startnummernblock startnummernblock)
+        public ActionResult StartNumberConfigurationsEdit([Bind(Include = "ID,minStartnummer,maxStartnummer,gruppierung,differenz")] StartNumberConfiguration startnummernblock)
         {
             if (ModelState.IsValid)
             {

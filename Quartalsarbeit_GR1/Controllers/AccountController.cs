@@ -168,7 +168,7 @@ namespace Quartalsarbeit_GR1.Controllers
                     
                     var userFromDb = db.Users.Find(user.Id);
 
-                    var verein = new Verein
+                    var verein = new Club
                     {
                         Vereinsname = model.Vereinsname,
                         Strasse = model.Strasse,

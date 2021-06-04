@@ -16,7 +16,7 @@ namespace Quartalsarbeit_GR1
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Anlaesse", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Events", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

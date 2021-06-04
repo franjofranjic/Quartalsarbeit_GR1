@@ -9,7 +9,7 @@ namespace Quartalsarbeit_GR1.Models
     {
         Männlich, Weiblich
     }
-    public class Kategorie
+    public class Category
     {
         public int ID { get; set; }
 
