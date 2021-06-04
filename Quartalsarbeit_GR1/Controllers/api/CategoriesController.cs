@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Quartalsarbeit_GR1.Models;
+using Quartalsarbeit_GR1.Dtos;
+using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
@@ -17,9 +19,13 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Categories
-        public IQueryable<Category> GetCategories()
+        public IEnumerable<CategoryDto> GetCategories()
         {
-            return db.Categories;
+            var categoriesQuery = db.Categories;
+
+            return categoriesQuery
+                .ToList()
+                .Select(Mapper.Map<Category, CategoryDto>);
         }
 
         // GET: api/Categories/5

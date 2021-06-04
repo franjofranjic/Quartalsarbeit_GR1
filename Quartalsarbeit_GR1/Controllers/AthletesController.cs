@@ -20,7 +20,7 @@ namespace Quartalsarbeit_GR1.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-            var verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
+            var verein = db.Clubs.Where(e => e.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
             var athletenVonVerein = db.Athletes.Where(e => e.Verein.ID == verein.ID).ToList();
             return View(athletenVonVerein);
         }
@@ -56,7 +56,7 @@ namespace Quartalsarbeit_GR1.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
-                var Verein =  db.Vereine.Where(c => c.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
+                var Verein =  db.Clubs.Where(c => c.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
                 athlet.Verein = Verein;
                 db.Athletes.Add(athlet);
                 db.SaveChanges();

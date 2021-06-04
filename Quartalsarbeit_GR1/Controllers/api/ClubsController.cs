@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Quartalsarbeit_GR1.Models;
+using Quartalsarbeit_GR1.Dtos;
+using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
@@ -17,16 +19,21 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Clubs
-        public IQueryable<Club> GetVereine()
+        public IEnumerable<ClubDto> GetClubs()
         {
-            return db.Vereine;
+            var clubsQuery = db.Clubs;
+            var clubs = clubsQuery.Include(e => e.Vereinsverantwortlicher).ToList();
+
+            return clubsQuery
+                .ToList()
+                .Select(Mapper.Map<Club, ClubDto>);
         }
 
         // GET: api/Clubs/5
         [ResponseType(typeof(Club))]
         public IHttpActionResult GetClub(int id)
         {
-            Club club = db.Vereine.Find(id);
+            Club club = db.Clubs.Find(id);
             if (club == null)
             {
                 return NotFound();
@@ -79,7 +86,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return BadRequest(ModelState);
             }
 
-            db.Vereine.Add(club);
+            db.Clubs.Add(club);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = club.ID }, club);
@@ -89,13 +96,13 @@ namespace Quartalsarbeit_GR1.Controllers.api
         [ResponseType(typeof(Club))]
         public IHttpActionResult DeleteClub(int id)
         {
-            Club club = db.Vereine.Find(id);
+            Club club = db.Clubs.Find(id);
             if (club == null)
             {
                 return NotFound();
             }
 
-            db.Vereine.Remove(club);
+            db.Clubs.Remove(club);
             db.SaveChanges();
 
             return Ok(club);
@@ -112,7 +119,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
 
         private bool ClubExists(int id)
         {
-            return db.Vereine.Count(e => e.ID == id) > 0;
+            return db.Clubs.Count(e => e.ID == id) > 0;
         }
     }
 }

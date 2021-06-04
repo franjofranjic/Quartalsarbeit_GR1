@@ -11,6 +11,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Quartalsarbeit_GR1.Models;
+using Quartalsarbeit_GR1.Dtos;
+using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
@@ -19,9 +21,13 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Events
-        public IQueryable<Event> GetEvents()
+        public IEnumerable<EventDto> GetEvents()
         {
-            return db.Events;
+            var eventsQuery = db.Events;
+
+            return eventsQuery
+                .ToList()
+                .Select(Mapper.Map<Event, EventDto>);
         }
 
         // GET: api/Events/5

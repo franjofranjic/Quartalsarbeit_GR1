@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Quartalsarbeit_GR1.Models;
+using Quartalsarbeit_GR1.Dtos;
+using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
@@ -17,9 +19,15 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Athletes
-        public IQueryable<Athlete> GetAthletes()
+        public IEnumerable<AthleteDto> GetAthletes()
         {
-            return db.Athletes;
+            var athletesQuery = db.Athletes;
+
+            return athletesQuery
+                .Include(c => c.Verein)
+                .Include(c => c.Verein.Vereinsverantwortlicher)
+                .ToList()
+                .Select(Mapper.Map<Athlete, AthleteDto>);
         }
 
         // GET: api/Athletes/5

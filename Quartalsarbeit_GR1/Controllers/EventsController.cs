@@ -125,7 +125,7 @@ namespace Quartalsarbeit_GR1.Controllers
         }
 
         // GET: Events/Statistik/
-        public ActionResult Statistik(int? id)
+        public ActionResult Statistics(int? id)
         {
 
             if (id == null)
@@ -181,7 +181,7 @@ namespace Quartalsarbeit_GR1.Controllers
             if (!User.IsInRole(RoleName.Administrator))
             {
                 var userId = User.Identity.GetUserId();
-                Club Verein = db.Vereine.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
+                Club Verein = db.Clubs.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
                 foreach (var model in modelList)
                 {
 
@@ -193,8 +193,8 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(modelList);
         }
 
-        // GET: Events/Konfiguration/5
-        public ActionResult Konfiguration(int? id)
+        // GET: Events/Configuration/5
+        public ActionResult Configuration(int? id)
         {
             var test = db.Configurations.ToList();
             var configs = db.Configurations.Where(e => e.Anlass.ID == id).ToList();
@@ -203,7 +203,7 @@ namespace Quartalsarbeit_GR1.Controllers
             return View(configs);
         }
 
-        public ActionResult addKategorie(int? id)
+        public ActionResult addCategory(int? id)
         {
             var disciplines = db.Disciplines.ToList();
             var configs = db.Configurations.ToList();
@@ -220,7 +220,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult addKategorie([Bind(Include = "ID,Anlass,Kategorie,Disziplin")] Configuration config)
+        public ActionResult addCategory([Bind(Include = "ID,Anlass,Kategorie,Disziplin")] Configuration config)
         {
             if (ModelState.IsValid)
             {
@@ -237,7 +237,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Teilenehmer(List<Participant> teilnehmerList)
+        public ActionResult Participants(List<Participant> teilnehmerList)
         {
             if (ModelState.IsValid)
             {
@@ -254,14 +254,14 @@ namespace Quartalsarbeit_GR1.Controllers
 
 
         // GET: Events/Startnummeblockr/5
-        public ActionResult StartNumberConfigurations(int? id)
+        public ActionResult StartNumberConfiguration(int? id)
         {
             StartNumberConfiguration startnummernblock = db.StartNumberConfigurations.Where(e => e.anlass.ID == id).First();
             return View(startnummernblock);
         }
 
         // GET: Events/Startnummeblockr/5
-        public ActionResult StartNumberConfigurationsEdit(int? id)
+        public ActionResult StartNumberConfigurationEdit(int? id)
         {
             
             if (id == null)
@@ -281,7 +281,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StartNumberConfigurationsEdit([Bind(Include = "ID,minStartnummer,maxStartnummer,gruppierung,differenz")] StartNumberConfiguration startnummernblock)
+        public ActionResult StartNumberConfigurationEdit([Bind(Include = "ID,minStartnummer,maxStartnummer,gruppierung,differenz")] StartNumberConfiguration startnummernblock)
         {
             if (ModelState.IsValid)
             {

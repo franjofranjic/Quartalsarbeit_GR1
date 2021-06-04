@@ -13,7 +13,7 @@ namespace Quartalsarbeit_GR1.Dtos
 
         public String Nachname { get; set; }
 
-        public ClubDto Club { get; set; }
+        public ClubDto Verein { get; set; }
 
         public DateTime Geburtstag { get; set; }
 

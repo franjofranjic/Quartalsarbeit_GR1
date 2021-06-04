@@ -5,14 +5,8 @@ using System.Web;
 
 namespace Quartalsarbeit_GR1.Dtos
 {
-    public class EventDto
+    public class StatisticsDto
     {
         public int ID { get; set; }
-
-        public String Bezeichnung { get; set; }
-
-        public String Ort { get; set; }
-
-        public DateTime Datum { get; set; }
     }
 }

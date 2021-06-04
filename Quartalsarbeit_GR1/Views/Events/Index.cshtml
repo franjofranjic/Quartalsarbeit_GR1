@@ -39,16 +39,16 @@
         @Html.DisplayFor(modelItem => item.Datum)
     </td>
     <td>
-        @Html.ActionLink("Konfiguration", "Konfiguration", new { id = item.ID })
+        @Html.ActionLink("Konfiguration", "Configuration", new { id = item.ID })
     </td>
     <td>
-        @Html.ActionLink("Teilnehmer", "Teilnehmer", new { id = item.ID })
+        @Html.ActionLink("Teilnehmer", "Participants", new { id = item.ID })
     </td>
     <td>
-        @Html.ActionLink("Statistik", "Statistik", new { id = item.ID })
+        @Html.ActionLink("Statistik", "Statistics", new { id = item.ID })
     </td>
     <td>
-        @Html.ActionLink("Startnummer Block", "Startnummernblock", new { id = item.ID })
+        @Html.ActionLink("Startnummer Block", "StartNumberConfiguration", new { id = item.ID })
     </td>
     <td>
         @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |

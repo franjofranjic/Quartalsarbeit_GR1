@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Athlet>
+﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Athlete>
 
 @{
     ViewBag.Title = "Athleten";
@@ -7,7 +7,7 @@
 <h2>Athleten</h2>
 
 <p>
-    @Html.ActionLink("Create New", "AthletCreate")
+    @Html.ActionLink("Create New", "AthleteCreate")
 </p>
 <table class="table">
     <tr>
@@ -60,8 +60,8 @@
                 @Html.DisplayFor(modelItem => item.Verein.Vereinsname)
             </td>
             <td>
-                @Html.ActionLink("Edit", "AthletEdit", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "AthletDelete", new { id = item.ID })
+                @Html.ActionLink("Edit", "AthleteEdit", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "AthleteDelete", new { id = item.ID })
             </td>
         </tr>
     }

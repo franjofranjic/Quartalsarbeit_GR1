@@ -15,6 +15,9 @@ namespace Quartalsarbeit_GR1.App_Start
             Mapper.CreateMap<Event, EventDto>();
             Mapper.CreateMap<Club, ClubDto>();
             Mapper.CreateMap<Participant, ParticipantDto>();
+            Mapper.CreateMap<Athlete, AthleteDto>();
+            Mapper.CreateMap<ApplicationUser, VereinsverantwortlicherDto>();
+
 
             // Dto to Domain
             Mapper.CreateMap<DisciplineDto, Discipline>()
@@ -29,6 +32,10 @@ namespace Quartalsarbeit_GR1.App_Start
                 .ForMember(c => c.ID, opt => opt.Ignore());
             Mapper.CreateMap<ParticipantDto, Participant>()
                 .ForMember(c => c.ID, opt => opt.Ignore());
+            Mapper.CreateMap<AthleteDto, Athlete>()
+                .ForMember(c => c.ID, opt => opt.Ignore());
+            Mapper.CreateMap<VereinsverantwortlicherDto, ApplicationUser>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
         }
     }
 }

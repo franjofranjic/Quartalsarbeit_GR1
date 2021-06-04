@@ -176,7 +176,7 @@ namespace Quartalsarbeit_GR1.Controllers
                         PLZ = model.PLZ,
                         Vereinsverantwortlicher = userFromDb,
                     };
-                    db.Vereine.Add(verein);
+                    db.Clubs.Add(verein);
                     var resultVerein = db.SaveChanges();
 
 

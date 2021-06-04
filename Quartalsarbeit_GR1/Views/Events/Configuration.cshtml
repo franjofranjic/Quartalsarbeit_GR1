@@ -1,5 +1,5 @@
 ﻿@using Quartalsarbeit_GR1.Models;
-@model List<Config>
+@model List<Configuration>
 
 @{
     ViewBag.Title = "Konfiguration";
@@ -11,10 +11,10 @@
 
 
 <p>
-    @Html.ActionLink("Kategorie hinzufügen", "addKategorie")
+    @Html.ActionLink("Kategorie hinzufügen", "addCategory")
 </p>
 
-@foreach (Config config in Model)
+@foreach (Configuration config in Model)
 {
     <h2>
         @config.Kategorie

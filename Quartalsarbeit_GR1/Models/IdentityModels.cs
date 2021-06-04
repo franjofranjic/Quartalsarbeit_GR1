@@ -39,7 +39,7 @@ namespace Quartalsarbeit_GR1.Models
     {
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Club> Vereine { get; set; }
+        public DbSet<Club> Clubs { get; set; }
         public DbSet<Athlete> Athletes { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Configuration> Configurations { get; set; }

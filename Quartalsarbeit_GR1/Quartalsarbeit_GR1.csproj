@@ -190,7 +190,9 @@
     <Compile Include="Controllers\api\AthletesController.cs" />
     <Compile Include="Controllers\api\CategoriesController.cs" />
     <Compile Include="Controllers\api\ClubsController.cs" />
+    <Compile Include="Controllers\api\ConfigurationsController.cs" />
     <Compile Include="Controllers\api\EventsController.cs" />
+    <Compile Include="Controllers\api\StatisticsController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\api\DisciplinesController.cs" />
     <Compile Include="Controllers\AthletesController.cs" />
@@ -199,6 +201,8 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ClubsController.cs" />
+    <Compile Include="Dtos\VereinsverantwortlicherDto.cs" />
+    <Compile Include="Dtos\StatisticsDto.cs" />
     <Compile Include="Dtos\StartNumberConfigurationDto.cs" />
     <Compile Include="Dtos\ParticipantDto.cs" />
     <Compile Include="Dtos\ConfigurationDto.cs" />
@@ -340,17 +344,16 @@
     <Content Include="Views\Events\ReadOnlyList.cshtml" />
     <Content Include="Views\Manage\Edit.cshtml" />
     <Content Include="Views\Athletes\Index.cshtml" />
-    <Content Include="Views\Events\Config.cshtml" />
-    <Content Include="Views\Events\Teilnehmer.cshtml" />
-    <Content Include="Views\Events\Statistik.cshtml" />
-    <Content Include="Views\Events\Konfiguration.cshtml" />
-    <Content Include="Views\Clubs\Athleten.cshtml" />
-    <Content Include="Views\Clubs\AthletEdit.cshtml" />
-    <Content Include="Views\Clubs\AthletDelete.cshtml" />
-    <Content Include="Views\Events\addKategorie.cshtml" />
-    <Content Include="Views\Clubs\AthletCreate.cshtml" />
-    <Content Include="Views\Events\Startnummernblock.cshtml" />
-    <Content Include="Views\Events\StartnummernblockEdit.cshtml" />
+    <Content Include="Views\Events\Participants.cshtml" />
+    <Content Include="Views\Events\Statistics.cshtml" />
+    <Content Include="Views\Events\Configuration.cshtml" />
+    <Content Include="Views\Clubs\Athletes.cshtml" />
+    <Content Include="Views\Clubs\AthleteEdit.cshtml" />
+    <Content Include="Views\Clubs\AthleteDelete.cshtml" />
+    <Content Include="Views\Events\addCategory.cshtml" />
+    <Content Include="Views\Clubs\AthleteCreate.cshtml" />
+    <Content Include="Views\Events\StartNumberConfiguration.cshtml" />
+    <Content Include="Views\Events\StartNumberConfigurationEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
