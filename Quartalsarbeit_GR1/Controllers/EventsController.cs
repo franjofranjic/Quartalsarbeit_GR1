@@ -164,7 +164,7 @@ namespace Quartalsarbeit_GR1.Controllers
         public ActionResult Participants(int? id)
         {
             var athleten = db.Athletes.ToList();
-            var teilnehmer = db.Participants.Where(e => e.Anlass.ID == id).ToList();
+            var teilnehmer = db.Participants.Where(e => e.Event.ID == id).ToList();
             //Todo der Participants besitzt auch Wahldisziplinen in einem zweiten Schritt
 
             var modelList = new List<TeilnehmerViewModel>();
@@ -174,7 +174,7 @@ namespace Quartalsarbeit_GR1.Controllers
                 modelList.Add(new TeilnehmerViewModel
                 {
                     athlet = athlet,
-                    teilnahme = teilnehmer.Any(e => e.Athlet.ID == athlet.ID)
+                    teilnahme = teilnehmer.Any(e => e.Athlete.ID == athlet.ID)
                 });
             }
 

@@ -19,13 +19,18 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Disciplines
-        public IEnumerable<DisciplineDto> GetDisciplines()
+        public IHttpActionResult GetDisciplines(string query = null)
         {
-            var disciplinesQuery = db.Disciplines;
+            IQueryable<Discipline> disciplinesQuery = db.Disciplines;
 
-            return disciplinesQuery
-                .ToList()
-                .Select(Mapper.Map<Discipline, DisciplineDto>);
+            if (!String.IsNullOrWhiteSpace(query))
+                disciplinesQuery = disciplinesQuery.Where(c => c.Bezeichnung.Contains(query));
+
+            var disciplineDtos = disciplinesQuery
+            .ToList()
+            .Select(Mapper.Map<Discipline, DisciplineDto>);
+
+            return Ok(disciplineDtos);
         }
 
         // GET: api/Disciplines/5

@@ -9,7 +9,7 @@ namespace Quartalsarbeit_GR1.Dtos
     {
         public int ID { get; set; }
 
-        public int EventId { get; set; }
+        public EventDto Event { get; set; }
 
         public AthleteDto Athlete { get; set; }
 

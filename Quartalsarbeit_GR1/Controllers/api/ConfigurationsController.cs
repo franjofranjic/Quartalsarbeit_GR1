@@ -23,7 +23,11 @@ namespace Quartalsarbeit_GR1.Controllers.api
         {
             var configurationsQuery = db.Configurations;
 
-
+            var configs = configurationsQuery
+                .Include(c => c.Anlass)
+                .Include(c => c.Disziplin)
+                .Include(c => c.Kategorie)
+                .ToList();
 
             return configurationsQuery
                 .ToList()
@@ -83,15 +87,23 @@ namespace Quartalsarbeit_GR1.Controllers.api
         public IHttpActionResult PostConfiguration(ConfigurationDto newConfiguration)
         {
             var category = db.Categories.Single(
-               c => c.ID == newConfiguration.CategoryId);
+               c => c.ID == newConfiguration.Category.ID);
 
-            var disciplines = db.Disciplines.Where(
-                m => newConfiguration.DisciplineIds.Contains(m.ID)).ToList();
+            var events = db.Events.Single(
+                c => c.ID == newConfiguration.Event.ID);
+
+            var disciplines = new List<Discipline>();
+
+            foreach (var disciplineDto in newConfiguration.Disciplines) {
+                disciplines.Add(Mapper.Map<DisciplineDto, Discipline>(disciplineDto));
+               
+            }
 
             foreach (var discipline in disciplines)
             {
                 var configuration = new Configuration
                 {
+                    Anlass = events,
                     Disziplin = discipline,
                     Kategorie = category,
                 };

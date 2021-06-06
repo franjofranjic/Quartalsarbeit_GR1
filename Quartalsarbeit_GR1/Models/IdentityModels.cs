@@ -21,10 +21,10 @@ namespace Quartalsarbeit_GR1.Models
         public string Nachname { get; set; }
 
         [Required]
-        public int TelPrivat { get; set; }
+        public string TelPrivat { get; set; }
 
         [Required]
-        public int TelGeschaeft { get; set; }
+        public string TelGeschaeft { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

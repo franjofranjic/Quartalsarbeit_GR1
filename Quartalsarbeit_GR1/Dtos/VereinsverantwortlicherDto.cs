@@ -13,9 +13,9 @@ namespace Quartalsarbeit_GR1.Dtos
 
         public String Nachname { get; set; }
 
-        public int TelPrivat { get; set; }
+        public string TelPrivat { get; set; }
 
-        public int TelGeschaeft { get; set; }
+        public string TelGeschaeft { get; set; }
 
         public String Email { get; set; }
 

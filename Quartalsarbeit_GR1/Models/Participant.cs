@@ -9,11 +9,10 @@ namespace Quartalsarbeit_GR1.Models
     {
         public int ID { get; set; }
 
-        public Event Anlass { get; set; }
+        public Event Event { get; set; }
 
-        public Athlete Athlet { get; set; }
+        public Athlete Athlete { get; set; }
 
-        //Startnummerblock hmmmm
-        public int Startnummer { get; set; }
+        public int StartNumber { get; set; }
     }
 }

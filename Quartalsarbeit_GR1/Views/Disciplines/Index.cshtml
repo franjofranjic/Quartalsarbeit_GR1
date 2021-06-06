@@ -1,36 +1,72 @@
 ﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Discipline>
 
 @{
-    ViewBag.Title = "Disziplinen";
+    ViewBag.Title = "Disziplin";
 }
 
 <h2>Disziplinen</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Bezeichnung)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Abkuerzung)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Formel)
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Bezeichnung)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Abkuerzung)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Formel)
-        </td>
-    </tr>
-}
-
+<p>
+    @Html.ActionLink("neue Disziplin", "New", "Disziplinen", null, new { @class = "btn btn-primary" })
+</p>
+<table id="disziplinen" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Disziplin</th>
+            <th>Abkürzung</th>
+            <th>Formel</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#disziplinen").DataTable({
+                ajax: {
+                    url: "/api/Disciplines",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "bezeichnung",
+                        render: function (data, type, discipline) {
+                            return "<a href='/disciplines/edit/" + discipline.id + "'>" + discipline.bezeichnung + "</a>";
+                        }
+                    },
+                    {
+                        data: "abkuerzung",
+                    },
+                    {
+                        data: "formel",
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-discipline-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+
+            $("#disziplinen").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this movie?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/disciplines/" + button.attr("data-discipline-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

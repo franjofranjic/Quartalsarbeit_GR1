@@ -19,13 +19,20 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Categories
-        public IEnumerable<CategoryDto> GetCategories()
+        public IHttpActionResult GetCategories(string query = null)
         {
-            var categoriesQuery = db.Categories;
+            IQueryable<Category> categoriesQuery = db.Categories;
 
-            return categoriesQuery
-                .ToList()
-                .Select(Mapper.Map<Category, CategoryDto>);
+            if (!String.IsNullOrWhiteSpace(query))
+                categoriesQuery = categoriesQuery.Where(c => c.Bezeichnung.Contains(query));
+
+            var categories = categoriesQuery.ToList();
+
+            var categoryDtos = categoriesQuery
+            .ToList()
+            .Select(Mapper.Map<Category, CategoryDto>);
+
+            return Ok(categoryDtos);
         }
 
         // GET: api/Categories/5

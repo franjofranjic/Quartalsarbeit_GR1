@@ -14,9 +14,9 @@ namespace Quartalsarbeit_GR1.Models
 
         public string Nachname { get; set; }
 
-        public int TelPrivat { get; set; }
+        public string TelPrivat { get; set; }
 
-        public int TelGeschaeft { get; set; }
+        public string TelGeschaeft { get; set; }
 
         public string Email { get; set; }
 

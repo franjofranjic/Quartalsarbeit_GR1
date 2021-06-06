@@ -1,28 +1,33 @@
-﻿@using Quartalsarbeit_GR1.Models;
-@using System.Web.Mvc;
-@model Tuple<List<Category>, List<Discipline>>
+﻿@model dynamic
+
 @{
     ViewBag.Title = "Add";
 }
 
-<form id="newKonfig">
+<h2>Neue Kategorie</h2>
+
+<form id="newConfig">
+    <div class="form-group">
+        <input id="event" name="event" required type="text" value="" class="form-control" hidden="hidden"/>
+    </div>
+
     <div class="form-group">
         <label>Kategorie</label>
         <div class="tt-container">
-            <input id="kategorie" name="kategorie" data-rule-validCustomer="true" required type="text" value="" class="form-control" />
+            <input id="category" name="category" required type="text" value="" class="form-control" />
         </div>
     </div>
 
     <div class="form-group">
         <label>Disziplin</label>
         <div class="tt-container">
-            <input id="disziplin" name="disziplin" data-rule-atLeastOneMovie="true" type="text" value="" class="form-control" />
+            <input id="discipline" name="discipline" type="text" value="" class="form-control" />
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-4 col-sm-4">
-            <ul id="disziplinen" class="list-group"></ul>
+            <ul id="disciplines" class="list-group"></ul>
         </div>
     </div>
 
@@ -31,94 +36,82 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         $(document).ready(function () {
-
-             var disciplines = '@Model.Item1';
-             console.log(disciplines);
-
-            var vm = {
-                disziplinIds: []
+             var vm = {
+                 disciplines: []
             };
 
-            var kategorien = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Bezeichnung'),
+            var categories = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('bezeichnung'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: '/api/kategorie?query=%QUERY',
+                    url: '/api/Categories?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+            
+            $('#category').typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                name: 'categories',
+                display: 'bezeichnung',
+                source: categories
+            }).on("typeahead:select", function(e, category) {
+                vm.category = category;
+            });
+            var disciplines = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('bezeichnung'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/Disciplines?query=%QUERY',
                     wildcard: '%QUERY'
                 }
             });
 
-            $('#kategorie').typeahead({
+            $('#discipline').typeahead({
                 minLength: 3,
                 highlight: true
             }, {
-                name: 'Kategorie',
-                display: 'Bezeichnung',
-                source: @Model.Item1.ToArray()
-            }).on("typeahead:select", function (e, kategorie) {
-                console.log(kategorie.Bezeichnung);
-                vm.kategorieId = kategorie.id;
+               name: 'disciplines',
+               display: 'bezeichnung',
+               source: disciplines
+            }).on("typeahead:select", function (e, discipline) {
+                $("#disciplines").append("<li class='list-group-item'>" + discipline.bezeichnung + "</li>");
+
+                $("#discipline").typeahead("val", "");
+
+                vm.disciplines.push(discipline)
             });
-
-            var disziplinen = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('Bezeichnung'),
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    url: '/api/disziplinen?query=%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-
-            $('#disziplin').typeahead({
-                minLength: 3,
-                highlight: true
-            }, {
-                name: 'Disziplin',
-                display: 'Bezeichnung',
-                source: @Model.Item2.ToArray()
-            }).on("typeahead:select", function (e, disziplin) {
-                $("#disziplinen").append("<li class='list-group-item'>" + disziplin.Bezeichnung + "</li>");
-
-                $("#disziplin").typeahead("val", "");
-
-                vm.disziplinIds.push(disziplin.ID);
-            });
-
-            $.validator.addMethod("validCustomer", function () {
-                return vm.kategorieId && vm.kategorie !== 0;
-            }, "Please select a valid kategorie.");
-
-            $.validator.addMethod("atLeastOneMovie", function () {
-                return vm.disziplinIds.length > 0;
-            }, "Please select at least one discipline.");
-
-            var validator = $("#newKonfig").validate({
+            
+            var validator = $("#newConfig").validate({
                 submitHandler: function () {
+                    console.log(vm);
                     $.ajax({
-                        url: "/api/newKonfig",
+                        url: "/api/Configurations",
                         method: "post",
                         data: vm
                     })
-                        .done(function () {
-                            toastr.success("Rentals successfully recorded.");
+                    .done(function () {
+                        toastr.success("Rentals successfully recorded.");
 
-                            $("#kategorie").typeahead("val", "");
-                            $("#disziplin").typeahead("val", "");
-                            $("#disziplinen").empty();
+                        $("#category").typeahead("val", "");
+                        $("#discipline").typeahead("val", "");
+                        $("#disciplines").empty();
 
-                            vm = { disziplinIds: [] };
+                        vm = { disciplines: [] };
 
-                            validator.resetForm();
-                        })
-                        .fail(function () {
-                            toastr.error("Something unexpected happened.");
-                        });
+                        validator.resetForm();
+                    })
+                    .fail(function () {
+                        toastr.error("Something unexpected happened.");
+                    });
 
                     return false;
                 }
+                
             });
         });
-    </script>
+</script>
 }

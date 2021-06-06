@@ -33,6 +33,8 @@ namespace Quartalsarbeit_GR1
                       "~/content/datatables/css/datatables.bootstrap.css",
                       "~/Content/bootstrap.css",
                       "~/Content/nav.css",
+                      "~/content/typeahead.css",
+                      "~/content/toastr.css",
                       "~/Content/site.css"));
         }
     }

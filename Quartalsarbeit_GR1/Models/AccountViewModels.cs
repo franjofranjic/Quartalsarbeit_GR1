@@ -90,11 +90,11 @@ namespace Quartalsarbeit_GR1.Models
 
         [Required]
         [Display(Name = "Tel. Privat")]
-        public int TelPrivat { get; set; }
+        public string TelPrivat { get; set; }
 
         [Required]
         [Display(Name = "Tel. Geschäftlich")]
-        public int TelGeschaeft { get; set; }
+        public string TelGeschaeft { get; set; }
 
         [Required]
         [EmailAddress]
