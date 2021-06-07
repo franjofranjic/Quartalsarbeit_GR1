@@ -1,4 +1,5 @@
-﻿@model dynamic
+﻿@using Quartalsarbeit_GR1.Models;
+@model Event
 
 @{
     ViewBag.Title = "Add";
@@ -7,8 +8,10 @@
 <h2>Neue Kategorie</h2>
 
 <form id="newConfig">
+    <div data-event="@Model" id="event"></div>
+
     <div class="form-group">
-        <input id="event" name="event" required type="text" value="" class="form-control" hidden="hidden"/>
+        <input id="event" name="event" required type="text" value="" class="form-control" hidden="hidden" />
     </div>
 
     <div class="form-group">
@@ -36,10 +39,11 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         $(document).ready(function () {
-             var vm = {
-                 disciplines: []
+            console.log($("#event").attr("data-event").valueOf());
+            var vm = {
+                disciplines: []
             };
 
             var categories = new Bloodhound({
@@ -50,7 +54,7 @@
                     wildcard: '%QUERY'
                 }
             });
-            
+
             $('#category').typeahead({
                 minLength: 3,
                 highlight: true
@@ -58,7 +62,7 @@
                 name: 'categories',
                 display: 'bezeichnung',
                 source: categories
-            }).on("typeahead:select", function(e, category) {
+            }).on("typeahead:select", function (e, category) {
                 vm.category = category;
             });
             var disciplines = new Bloodhound({
@@ -74,9 +78,9 @@
                 minLength: 3,
                 highlight: true
             }, {
-               name: 'disciplines',
-               display: 'bezeichnung',
-               source: disciplines
+                name: 'disciplines',
+                display: 'bezeichnung',
+                source: disciplines
             }).on("typeahead:select", function (e, discipline) {
                 $("#disciplines").append("<li class='list-group-item'>" + discipline.bezeichnung + "</li>");
 
@@ -84,7 +88,7 @@
 
                 vm.disciplines.push(discipline)
             });
-            
+
             var validator = $("#newConfig").validate({
                 submitHandler: function () {
                     console.log(vm);
@@ -93,25 +97,25 @@
                         method: "post",
                         data: vm
                     })
-                    .done(function () {
-                        toastr.success("Rentals successfully recorded.");
+                        .done(function () {
+                            toastr.success("Rentals successfully recorded.");
 
-                        $("#category").typeahead("val", "");
-                        $("#discipline").typeahead("val", "");
-                        $("#disciplines").empty();
+                            $("#category").typeahead("val", "");
+                            $("#discipline").typeahead("val", "");
+                            $("#disciplines").empty();
 
-                        vm = { disciplines: [] };
+                            vm = { disciplines: [] };
 
-                        validator.resetForm();
-                    })
-                    .fail(function () {
-                        toastr.error("Something unexpected happened.");
-                    });
+                            validator.resetForm();
+                        })
+                        .fail(function () {
+                            toastr.error("Something unexpected happened.");
+                        });
 
                     return false;
                 }
-                
+
             });
         });
-</script>
+    </script>
 }

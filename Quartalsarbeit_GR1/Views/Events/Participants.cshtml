@@ -44,9 +44,48 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="button" value="Create" class="btn btn-default" onclick="SubmitForm(this)"/>
+            <input type="button" value="Create" class="btn btn-default" onclick="SubmitForm(this)" />
         </div>
     </div>
 
 }
 
+<table id="athletes" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Verein</th>
+            <th>Teilnehmen</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#athletes").DataTable({
+                ajax: {
+                    url: "/api/Athletes",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "vorname",
+                    },
+                    {
+                        data: "nachname"
+                    },
+                    {
+                        data: "verein.vereinsname"
+                    },
+                    {
+                        data: "nachname"
+                    }
+                ]
+            });
+        });
+    </script>
+}

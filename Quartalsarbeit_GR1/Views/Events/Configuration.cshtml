@@ -1,5 +1,5 @@
 ﻿@using Quartalsarbeit_GR1.Models;
-@model List<Configuration>
+@model Event
 
 @{
     ViewBag.Title = "Konfiguration";
@@ -12,17 +12,31 @@
 
 <p>
     <!-- Todo Event mitgeben -->
-    @Html.ActionLink("Kategorie hinzufügen", "addCategory")
+    @Html.ActionLink("Kategorie hinzufügen", "addCategory", new { id = Model.ID })
 </p>
 
-@foreach (Configuration config in Model)
+<div data-event-id="@Model.ID" id="event"></div>
+
+
+
+<!-- Configurations anzeigen -->
+
+@section scripts
 {
-    <h2>
-        @config.Kategorie
-    </h2>
-    <h3>
-        @config.Disziplin
-    </h3>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                //url: "/api/Configurations?id=" + $("#event").attr("data-event-id").valueOf(),
+                url: "/api/Configurations",
+                type: 'GET',
+                success: function (res) {
+                    console.log(res);
+                }
+            });
+
+            // Anzeige der bisherigen Kategoriend
 
 
+        });
+    </script>
 }

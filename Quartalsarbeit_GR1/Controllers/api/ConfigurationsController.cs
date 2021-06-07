@@ -19,19 +19,44 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Configurations
-        public IEnumerable<ConfigurationDto> GetConfigurations()
+        public List<ConfigurationDto> GetConfigurations(int id = 0)
         {
-            var configurationsQuery = db.Configurations;
+            var configurationsGrouped = db.Configurations
+                            .Include(c => c.Anlass)
+                            .Include(c => c.Kategorie)
+                            .Include(c => c.Disziplin)
+                            .ToList()
+                            .GroupBy(c => new
+                            {
+                                c.Kategorie,
+                                c.Anlass
+                            }).ToList();
 
-            var configs = configurationsQuery
-                .Include(c => c.Anlass)
-                .Include(c => c.Disziplin)
-                .Include(c => c.Kategorie)
-                .ToList();
+            if (id != 0)
+                configurationsGrouped = db.Configurations
+                            .Include(c => c.Anlass)
+                            .Include(c => c.Kategorie)
+                            .Include(c => c.Disziplin)
+                            .Where(c => c.Anlass.ID == id)
+                            .ToList()
+                            .GroupBy(c => new
+                            {
+                                c.Kategorie,
+                                c.Anlass
+                            }).ToList();
 
-            return configurationsQuery
-                .ToList()
-                .Select(Mapper.Map<Configuration, ConfigurationDto>);
+            var configDtos = new List<ConfigurationDto>();
+            
+            foreach (var config in configurationsGrouped) {
+                configDtos.Add(new ConfigurationDto
+                {
+                    Event = Mapper.Map<Event, EventDto>(config.Key.Anlass),
+                    Category = Mapper.Map<Category, CategoryDto>(config.Key.Kategorie),
+                    Disciplines = Mapper.Map<List<Discipline>, List<DisciplineDto>>(config.Select(c => c.Disziplin).ToList())
+                });
+            }
+
+            return configDtos;
         }
 
         // GET: api/Configurations/5

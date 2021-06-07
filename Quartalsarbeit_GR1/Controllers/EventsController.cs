@@ -196,23 +196,16 @@ namespace Quartalsarbeit_GR1.Controllers
         // GET: Events/Configuration/5
         public ActionResult Configuration(int? id)
         {
-            var test = db.Configurations.ToList();
-            var configs = db.Configurations.Where(e => e.Anlass.ID == id).ToList();
-            var groupedConfigurations = configs.GroupBy(m => m.Kategorie).Select(grp => grp.ToList()).ToList();
+            var Event = db.Events.Where(e => e.ID == id).FirstOrDefault();
 
-            return View(configs);
+            return View(Event);
         }
 
         public ActionResult addCategory(int? id)
         {
-            var disciplines = db.Disciplines.ToList();
-            var configs = db.Configurations.ToList();
-            var groupConfigurations = configs.GroupBy(m => m.Kategorie).Select(grp => grp.Key).ToList();
-            var categories = db.Categories.ToList().Except(groupConfigurations).ToList();
+            var Event = db.Events.Where(e => e.ID == id).FirstOrDefault();
 
-
-            var tupleModel = new Tuple<List<Category>, List<Discipline>>(categories, disciplines);
-            return View(tupleModel);
+            return View(Event);
         }
 
         // POST: Events/Addkategorie
