@@ -33,12 +33,8 @@ namespace Quartalsarbeit_GR1.Controllers.api
                             }).ToList();
 
             if (id != 0)
-                configurationsGrouped = db.Configurations
-                            .Include(c => c.Anlass)
-                            .Include(c => c.Kategorie)
-                            .Include(c => c.Disziplin)
-                            .Where(c => c.Anlass.ID == id)
-                            .ToList()
+                configurationsGrouped = db.Configurations.Include(c => c.Anlass).Include(c => c.Kategorie).Include(c => c.Disziplin)
+                            .Where(c => c.Anlass.ID == id).ToList()
                             .GroupBy(c => new
                             {
                                 c.Kategorie,
@@ -60,7 +56,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Configurations/5
-        [ResponseType(typeof(Configuration))]
+        [ResponseType(typeof(ConfigurationDto))]
         public IHttpActionResult GetConfiguration(int id)
         {
             Configuration configuration = db.Configurations.Find(id);
@@ -69,42 +65,32 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return NotFound();
             }
 
-            return Ok(configuration);
+            return Ok(Mapper.Map<Configuration, ConfigurationDto>(configuration));
         }
 
         // PUT: api/Configurations/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutConfiguration(int id, Configuration configuration)
+        [HttpPut]
+        public IHttpActionResult PutConfiguration(int id, ConfigurationDto configurationDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != configuration.ID)
+            if (id != configurationDto.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(configuration).State = EntityState.Modified;
+            var configurationInDb = db.Configurations.SingleOrDefault(c => c.ID == id);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ConfigurationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (configurationInDb == null)
+                return NotFound();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            Mapper.Map(configurationDto, configurationInDb);
+            db.SaveChanges();
+
+            return Ok();
         }
 
         // POST: api/Configurations
@@ -141,6 +127,17 @@ namespace Quartalsarbeit_GR1.Controllers.api
             return Ok();
         }
 
+        // POST: api/Configurations/addCategory
+        [HttpPost]
+        public IHttpActionResult AddCategory(ConfigurationDto newConfiguration)
+        {
+
+            
+           db.SaveChanges();
+
+            return Ok();
+        }
+
         // DELETE: api/Configurations/5
         public IHttpActionResult DeleteConfiguration(int id)
         {
@@ -163,11 +160,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool ConfigurationExists(int id)
-        {
-            return db.Configurations.Count(e => e.ID == id) > 0;
         }
     }
 }

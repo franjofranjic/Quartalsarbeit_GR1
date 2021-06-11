@@ -31,82 +31,63 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Events/5
-        [ResponseType(typeof(Event))]
         public IHttpActionResult GetEvent(int id)
         {
-            Event @event = db.Events.Find(id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
+            var Event = db.Events.SingleOrDefault(c => c.ID == id);
 
-            return Ok(@event);
+            if (Event == null)
+                return NotFound();
+
+            return Ok(Mapper.Map<Event, EventDto>(Event));
         }
 
         // PUT: api/Events/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutEvent(int id, Event @event)
+        [HttpPut]
+        public IHttpActionResult PutEvent(int id, EventDto eventDto)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != @event.ID)
-            {
                 return BadRequest();
-            }
 
-            db.Entry(@event).State = EntityState.Modified;
+            var eventInDb = db.Events.SingleOrDefault(c => c.ID == id);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (eventInDb == null)
+                return NotFound();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            Mapper.Map(eventDto, eventInDb);
+
+            db.SaveChanges();
+
+            return Ok();
         }
 
         // POST: api/Events
-        [ResponseType(typeof(Event))]
-        public IHttpActionResult PostEvent(Event @event)
+        [HttpPost]
+        public IHttpActionResult PostEvent(EventDto eventDto)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                return BadRequest();
 
-            db.Events.Add(@event);
+            var Event = Mapper.Map<EventDto, Event>(eventDto);
+            db.Events.Add(Event);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = @event.ID }, @event);
+            eventDto.ID = Event.ID;
+            return Created(new Uri(Request.RequestUri + "/" + Event.ID), eventDto);
         }
 
         // DELETE: api/Events/5
-        [ResponseType(typeof(Event))]
+        [HttpDelete]
         public IHttpActionResult DeleteEvent(int id)
         {
-            Event @event = db.Events.Find(id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
+            var eventInDb = db.Events.SingleOrDefault(c => c.ID == id);
 
-            db.Events.Remove(@event);
+            if (eventInDb == null)
+                return NotFound();
+
+            db.Events.Remove(eventInDb);
             db.SaveChanges();
 
-            return Ok(@event);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
@@ -116,11 +97,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool EventExists(int id)
-        {
-            return db.Events.Count(e => e.ID == id) > 0;
         }
     }
 }

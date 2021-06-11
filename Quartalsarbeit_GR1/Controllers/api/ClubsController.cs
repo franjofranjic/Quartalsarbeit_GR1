@@ -30,7 +30,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Clubs/5
-        [ResponseType(typeof(Club))]
+        [ResponseType(typeof(ClubDto))]
         public IHttpActionResult GetClub(int id)
         {
             Club club = db.Clubs.Find(id);
@@ -39,73 +39,64 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return NotFound();
             }
 
-            return Ok(club);
+            return Ok(Mapper.Map<Club, ClubDto>(club));
         }
 
         // PUT: api/Clubs/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutClub(int id, Club club)
+        [HttpPut]
+        public IHttpActionResult PutClub(int id, ClubDto clubDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != club.ID)
+            if (id != clubDto.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(club).State = EntityState.Modified;
+            var clubInDb = db.Clubs.SingleOrDefault(c => c.ID == id);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClubExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (clubInDb == null)
+                return NotFound();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            Mapper.Map(clubDto, clubInDb);
+            db.SaveChanges();
+
+            return Ok();
         }
 
         // POST: api/Clubs
-        [ResponseType(typeof(Club))]
-        public IHttpActionResult PostClub(Club club)
+        [HttpPost]
+        public IHttpActionResult PostClub(ClubDto clubDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var club = Mapper.Map<ClubDto, Club>(clubDto);
             db.Clubs.Add(club);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = club.ID }, club);
+            clubDto.ID = club.ID;
+            return Created(new Uri(Request.RequestUri + "/" + club.ID), clubDto);
         }
 
         // DELETE: api/Clubs/5
-        [ResponseType(typeof(Club))]
+        [HttpDelete]
         public IHttpActionResult DeleteClub(int id)
         {
-            Club club = db.Clubs.Find(id);
-            if (club == null)
-            {
-                return NotFound();
-            }
+            var clubsInDb = db.Clubs.SingleOrDefault(c => c.ID == id);
 
-            db.Clubs.Remove(club);
+            if (clubsInDb == null)
+                return NotFound();
+
+            db.Clubs.Remove(clubsInDb);
             db.SaveChanges();
 
-            return Ok(club);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
@@ -115,11 +106,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool ClubExists(int id)
-        {
-            return db.Clubs.Count(e => e.ID == id) > 0;
         }
     }
 }
