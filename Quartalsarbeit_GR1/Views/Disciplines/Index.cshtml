@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Discipline>
 
 @{
-    ViewBag.Title = "Disziplin";
+    ViewBag.Title = "Discipline";
 }
 
 <h2>Disziplinen</h2>
 <p>
-    @Html.ActionLink("neue Disziplin", "New", "Disziplinen", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", "Disciplines", null, new { @class = "btn btn-primary" })
 </p>
 <table id="disziplinen" class="table table-bordered table-hover">
     <thead>

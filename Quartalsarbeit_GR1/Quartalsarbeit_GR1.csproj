@@ -595,6 +595,8 @@
     <Content Include="Views\Clubs\AthleteCreate.cshtml" />
     <Content Include="Views\Events\StartNumberConfiguration.cshtml" />
     <Content Include="Views\Events\StartNumberConfigurationEdit.cshtml" />
+    <Content Include="Views\Disciplines\Create.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
