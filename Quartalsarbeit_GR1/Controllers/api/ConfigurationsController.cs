@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class ConfigurationsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Configurations
+        [HttpGet]
         public List<ConfigurationDto> GetConfigurations(int id = 0)
         {
             var configurationsGrouped = db.Configurations
@@ -53,44 +55,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
             }
 
             return configDtos;
-        }
-
-        // GET: api/Configurations/5
-        [ResponseType(typeof(ConfigurationDto))]
-        public IHttpActionResult GetConfiguration(int id)
-        {
-            Configuration configuration = db.Configurations.Find(id);
-            if (configuration == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(Mapper.Map<Configuration, ConfigurationDto>(configuration));
-        }
-
-        // PUT: api/Configurations/5
-        [HttpPut]
-        public IHttpActionResult PutConfiguration(int id, ConfigurationDto configurationDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != configurationDto.ID)
-            {
-                return BadRequest();
-            }
-
-            var configurationInDb = db.Configurations.SingleOrDefault(c => c.ID == id);
-
-            if (configurationInDb == null)
-                return NotFound();
-
-            Mapper.Map(configurationDto, configurationInDb);
-            db.SaveChanges();
-
-            return Ok();
         }
 
         // POST: api/Configurations
@@ -131,14 +95,33 @@ namespace Quartalsarbeit_GR1.Controllers.api
         [HttpPost]
         public IHttpActionResult AddCategory(ConfigurationDto newConfiguration)
         {
-
-            
-           db.SaveChanges();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            db.Configurations.Add(Mapper.Map<ConfigurationDto, Configuration>(newConfiguration));
+            db.SaveChanges();
 
             return Ok();
         }
 
+        [HttpDelete]
+        public IHttpActionResult DeleteCategory(int id)
+        {
+            Configuration configuration = db.Configurations.Find(id);
+            if (configuration == null)
+            {
+                return NotFound();
+            }
+
+            db.Configurations.Remove(configuration);
+            db.SaveChanges();
+
+            return Ok(configuration);
+        }
+
         // DELETE: api/Configurations/5
+        [HttpDelete]
         public IHttpActionResult DeleteConfiguration(int id)
         {
             Configuration configuration = db.Configurations.Find(id);

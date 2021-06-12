@@ -14,21 +14,22 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class ParticipantsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Participants
+        [HttpGet]
         public IEnumerable<ParticipantDto> GetParticipants(int id)
         {
             var Event = db.Events.Find(id);
-
-
 
             var participants = db.Participants
                   .Include(c => c.Event)
                   .Include(c => c.Athlete)
                   .Include(c => c.Athlete.Verein)
+                  .Where(c => c.Event.ID == id)
                   .ToList();
 
             var athletes = db.Athletes
@@ -50,8 +51,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
             }
 
 
-
-
             foreach (var athlete in athletes)
             {
                 participantDtos.Add(new ParticipantDto
@@ -62,74 +61,34 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 });
             }
 
-
             return participantDtos;
         }
 
-        // PUT: api/Participants/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutParticipant(int id, Participant participant)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != participant.ID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(participant).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParticipantExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
         // POST: api/Participants
-        [ResponseType(typeof(Participant))]
-        public IHttpActionResult PostParticipant(Participant participant)
+        [HttpPost]
+        [Route("api/Participants/{eventID}")]
+        public IHttpActionResult PostParticipant(List<ParticipantDto> participantDtos, int eventID)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Participants.Add(participant);
+            var participants = db.Participants.Where(e => eventID == e.Event.ID).ToList();
+            db.Participants.RemoveRange(participants);
             db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = participant.ID }, participant);
-        }
-
-        // DELETE: api/Participants/5
-        [ResponseType(typeof(Participant))]
-        public IHttpActionResult DeleteParticipant(int id)
-        {
-            Participant participant = db.Participants.Find(id);
-            if (participant == null)
-            {
-                return NotFound();
+            participantDtos.RemoveAll(x => x.Teilnahme == false);
+            var newParticipants = Mapper.Map<List<ParticipantDto>, List<Participant>>(participantDtos);
+            foreach (var participant in newParticipants) {
+                db.Participants.Add(new Participant{
+                    Event = db.Events.Find(participant.Event.ID),
+                    Athlete = db.Athletes.Find(participant.Athlete.ID),
+                    StartNumber = participant.StartNumber,
+                });
             }
-
-            db.Participants.Remove(participant);
             db.SaveChanges();
 
-            return Ok(participant);
+            return Created(new Uri(Request.RequestUri + "/"), participantDtos);
         }
 
         protected override void Dispose(bool disposing)

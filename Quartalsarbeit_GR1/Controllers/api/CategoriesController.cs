@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class CategoriesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Categories
+        [HttpGet]
         public IHttpActionResult GetCategories(string query = null)
         {
             IQueryable<Category> categoriesQuery = db.Categories;
@@ -36,7 +38,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Categories/5
-        [ResponseType(typeof(Category))]
+        [HttpGet]
         public IHttpActionResult GetCategory(int id)
         {
             Category category = db.Categories.Find(id);
@@ -45,11 +47,11 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return NotFound();
             }
 
-            return Ok(category);
+            return Ok(Mapper.Map<Category, CategoryDto>(category));
         }
 
         // PUT: api/Categories/5
-        [ResponseType(typeof(void))]
+        [HttpPut]
         public IHttpActionResult PutCategory(int id, Category category)
         {
             if (!ModelState.IsValid)
@@ -84,22 +86,22 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // POST: api/Categories
-        [ResponseType(typeof(Category))]
-        public IHttpActionResult PostCategory(Category category)
+        [HttpPost]
+        public IHttpActionResult PostCategory(CategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                return BadRequest();
 
+            var category = Mapper.Map<CategoryDto, Category>(categoryDto);
             db.Categories.Add(category);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = category.ID }, category);
+            categoryDto.ID = category.ID;
+            return Created(new Uri(Request.RequestUri + "/" + category.ID), categoryDto);
         }
 
         // DELETE: api/Categories/5
-        [ResponseType(typeof(Category))]
+        [HttpDelete]
         public IHttpActionResult DeleteCategory(int id)
         {
             Category category = db.Categories.Find(id);
@@ -111,7 +113,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
             db.Categories.Remove(category);
             db.SaveChanges();
 
-            return Ok(category);
+            return Ok(Mapper.Map<Category, CategoryDto>(category));
         }
 
         protected override void Dispose(bool disposing)

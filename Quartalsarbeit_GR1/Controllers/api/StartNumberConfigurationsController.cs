@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class StartNumberConfigurationsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/StartNumberConfigurations
+        [HttpGet]
         public IHttpActionResult GetStartNumberConfigurations()
         {
             var startNumberConfigurationQuery = db.StartNumberConfigurations
@@ -34,6 +36,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/StartNumberConfigurations/5
+        [HttpGet]
         public IHttpActionResult GetStartNumberConfiguration(int id)
         {
             StartNumberConfiguration startNumberConfiguration = db.StartNumberConfigurations.Find(id);

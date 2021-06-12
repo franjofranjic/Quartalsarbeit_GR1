@@ -16,11 +16,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class EventsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Events
+        [HttpGet]
         public IEnumerable<EventDto> GetEvents()
         {
             var eventsQuery = db.Events;
@@ -31,6 +33,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Events/5
+        [HttpGet]
         public IHttpActionResult GetEvent(int id)
         {
             var Event = db.Events.SingleOrDefault(c => c.ID == id);

@@ -13,12 +13,13 @@ using System.Web.Http.Description;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class StatisticsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Statistics
-        [ResponseType(typeof(StatisticsDto))]
+        [HttpGet]
         public IHttpActionResult GetStatistics()
         {
             // Was brauchen wir hier mit Arbnor anschauen 

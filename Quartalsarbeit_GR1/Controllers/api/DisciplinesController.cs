@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class DisciplinesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Disciplines
+        [HttpGet]
         public IHttpActionResult GetDisciplines(string query = null)
         {
             IQueryable<Discipline> disciplinesQuery = db.Disciplines;
@@ -34,7 +36,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Disciplines/5
-        [ResponseType(typeof(Discipline))]
+        [HttpGet]
         public IHttpActionResult GetDiscipline(int id)
         {
             Discipline disziplin = db.Disciplines.Find(id);
@@ -47,20 +49,20 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // PUT: api/Disciplines/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutDiscipline(int id, Discipline disziplin)
+        [HttpPut]
+        public IHttpActionResult PutDiscipline(int id, DisciplineDto disziplinDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != disziplin.ID)
+            if (id != disziplinDto.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(disziplin).State = EntityState.Modified;
+            db.Entry(disziplinDto).State = EntityState.Modified;
 
             try
             {
@@ -82,22 +84,22 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // POST: api/Disciplines
-        [ResponseType(typeof(Discipline))]
-        public IHttpActionResult PostDiscipline(Discipline discipline)
+        [HttpPost]
+        public IHttpActionResult PostDiscipline(DisciplineDto disciplinedto)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                return BadRequest();
 
+            var discipline = Mapper.Map<DisciplineDto, Discipline>(disciplinedto);
             db.Disciplines.Add(discipline);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = discipline.ID }, discipline);
+            disciplinedto.ID = discipline.ID;
+            return Created(new Uri(Request.RequestUri + "/" + discipline.ID), disciplinedto);
         }
 
         // DELETE: api/Disciplines/5
-        [ResponseType(typeof(Discipline))]
+        [HttpDelete]
         public IHttpActionResult DeleteDiscipline(int id)
         {
             Discipline disziplin = db.Disciplines.Find(id);

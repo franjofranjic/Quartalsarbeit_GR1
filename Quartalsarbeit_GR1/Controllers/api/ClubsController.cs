@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class ClubsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Clubs
+        [HttpGet]
         public IEnumerable<ClubDto> GetClubs()
         {
             var clubsQuery = db.Clubs;
@@ -30,7 +32,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Clubs/5
-        [ResponseType(typeof(ClubDto))]
+        [HttpGet]
         public IHttpActionResult GetClub(int id)
         {
             Club club = db.Clubs.Find(id);

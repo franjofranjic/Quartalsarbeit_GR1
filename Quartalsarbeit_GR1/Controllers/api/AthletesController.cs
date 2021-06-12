@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
+    //[Authorize(Roles = RoleName.Administrator)]
     public class AthletesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Athletes
+        [HttpGet]
         public IEnumerable<AthleteDto> GetAthletes()
         {
             var athletesQuery = db.Athletes;
@@ -31,7 +33,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Athletes/5
-        [ResponseType(typeof(AthleteDto))]
+        [HttpGet]
         public IHttpActionResult GetAthlete(int id)
         {
             Athlete athlete = db.Athletes.Find(id);
