@@ -193,6 +193,7 @@
     <Compile Include="Controllers\api\ConfigurationsController.cs" />
     <Compile Include="Controllers\api\EventsController.cs" />
     <Compile Include="Controllers\api\ParticipantsController.cs" />
+    <Compile Include="Controllers\api\StartNumberConfigurationsController.cs" />
     <Compile Include="Controllers\api\StatisticsController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\api\DisciplinesController.cs" />

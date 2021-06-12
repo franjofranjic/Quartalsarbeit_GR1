@@ -31,7 +31,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         }
 
         // GET: api/Athletes/5
-        [ResponseType(typeof(Athlete))]
+        [ResponseType(typeof(AthleteDto))]
         public IHttpActionResult GetAthlete(int id)
         {
             Athlete athlete = db.Athletes.Find(id);
@@ -40,73 +40,64 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return NotFound();
             }
 
-            return Ok(athlete);
+            return Ok(Mapper.Map<Athlete, AthleteDto>(athlete));
         }
 
         // PUT: api/Athletes/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutAthlete(int id, Athlete athlete)
+        [HttpPut]
+        public IHttpActionResult PutAthlete(int id, AthleteDto athleteDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != athlete.ID)
+            if (id != athleteDto.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(athlete).State = EntityState.Modified;
+            var athleteInDb = db.Athletes.SingleOrDefault(c => c.ID == id);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AthleteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (athleteInDb == null)
+                return NotFound();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            Mapper.Map(athleteDto, athleteInDb);
+            db.SaveChanges();
+
+            return Ok();
         }
 
         // POST: api/Athletes
-        [ResponseType(typeof(Athlete))]
-        public IHttpActionResult PostAthlete(Athlete athlete)
+        [HttpPost]
+        public IHttpActionResult PostAthlete(AthleteDto athleteDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var athlete = Mapper.Map<AthleteDto, Athlete>(athleteDto);
             db.Athletes.Add(athlete);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = athlete.ID }, athlete);
+            athleteDto.ID = athlete.ID;
+            return Created(new Uri(Request.RequestUri + "/" + athlete.ID), athleteDto);
         }
 
         // DELETE: api/Athletes/5
-        [ResponseType(typeof(Athlete))]
+        [HttpDelete]
         public IHttpActionResult DeleteAthlete(int id)
         {
-            Athlete athlete = db.Athletes.Find(id);
-            if (athlete == null)
-            {
-                return NotFound();
-            }
+            var athleteInDb = db.Athletes.SingleOrDefault(c => c.ID == id);
 
-            db.Athletes.Remove(athlete);
+            if (athleteInDb == null)
+                return NotFound();
+
+            db.Athletes.Remove(athleteInDb);
             db.SaveChanges();
 
-            return Ok(athlete);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
@@ -116,11 +107,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool AthleteExists(int id)
-        {
-            return db.Athletes.Count(e => e.ID == id) > 0;
         }
     }
 }

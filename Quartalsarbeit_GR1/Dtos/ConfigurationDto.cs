@@ -8,6 +8,8 @@ namespace Quartalsarbeit_GR1.Dtos
 {
     public class ConfigurationDto
     {
+        public int ID { get; set; }
+
         public EventDto Event { get; set; }
 
         public CategoryDto Category { get; set; }

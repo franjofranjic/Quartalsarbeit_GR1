@@ -67,7 +67,7 @@
     <script>
         $(document).ready(function () {
             var table = $("#athletes").DataTable({
-                ajax: {
+                ajax: {  
                     url: "/api/Athletes",
                     dataSrc: ""
                 },
@@ -81,7 +81,7 @@
                     {
                         data: "verein.vereinsname"
                     },
-                    {
+                    {  
                         data: "nachname"
                     }
                 ]

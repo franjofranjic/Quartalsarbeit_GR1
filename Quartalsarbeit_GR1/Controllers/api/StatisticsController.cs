@@ -21,6 +21,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         [ResponseType(typeof(StatisticsDto))]
         public IHttpActionResult GetStatistics()
         {
+            // Was brauchen wir hier mit Arbnor anschauen 
             StatisticsDto statistics = null;
             if (statistics == null)
             {

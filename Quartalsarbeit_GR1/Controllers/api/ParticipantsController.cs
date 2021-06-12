@@ -19,29 +19,51 @@ namespace Quartalsarbeit_GR1.Controllers.api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Participants
-        public IEnumerable<ParticipantDto> GetParticipants()
+        public IEnumerable<ParticipantDto> GetParticipants(int id)
         {
-            var participantsQuery = db.Participants;
+            var Event = db.Events.Find(id);
 
-            return participantsQuery
-                .Include(c => c.Event)
-                .Include(c => c.Athlete)
-                .Include(c => c.Athlete.Verein)
-                .ToList()
-                .Select(Mapper.Map<Participant, ParticipantDto>);
-        }
 
-        // GET: api/Participants/5
-        [ResponseType(typeof(Participant))]
-        public IHttpActionResult GetParticipant(int id)
-        {
-            Participant participant = db.Participants.Find(id);
-            if (participant == null)
-            {
-                return NotFound();
+
+            var participants = db.Participants
+                  .Include(c => c.Event)
+                  .Include(c => c.Athlete)
+                  .Include(c => c.Athlete.Verein)
+                  .ToList();
+
+            var athletes = db.Athletes
+               .Include(c => c.Verein).ToList();
+            athletes.RemoveAll(x => participants.Any(y => y.Athlete.ID == x.ID));
+
+
+            var participantDtos = new List<ParticipantDto>();
+
+            foreach (var participant in participants) {
+                participantDtos.Add(new ParticipantDto
+                {
+                    ID = participant.ID,
+                    Teilnahme = true,
+                    Event = Mapper.Map<Event, EventDto>(participant.Event),
+                    Athlete = Mapper.Map<Athlete, AthleteDto>(participant.Athlete),
+                    StartNumber = participant.StartNumber,
+                });
             }
 
-            return Ok(participant);
+
+
+
+            foreach (var athlete in athletes)
+            {
+                participantDtos.Add(new ParticipantDto
+                {
+                    Teilnahme = false,
+                    Event = Mapper.Map<Event, EventDto>(Event),
+                    Athlete = Mapper.Map<Athlete, AthleteDto>(athlete),
+                });
+            }
+
+
+            return participantDtos;
         }
 
         // PUT: api/Participants/5
