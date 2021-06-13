@@ -50,19 +50,19 @@ namespace Quartalsarbeit_GR1.Controllers.api
 
         // PUT: api/Disciplines/5
         [HttpPut]
-        public IHttpActionResult PutDiscipline(int id, DisciplineDto disziplinDto)
+        public IHttpActionResult PutDiscipline(int id, Discipline discipline)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != disziplinDto.ID)
+            if (id != discipline.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(disziplinDto).State = EntityState.Modified;
+            db.Entry(discipline).State = EntityState.Modified;
 
             try
             {

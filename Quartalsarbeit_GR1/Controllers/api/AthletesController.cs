@@ -65,6 +65,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return NotFound();
 
             Mapper.Map(athleteDto, athleteInDb);
+            athleteInDb.Verein = db.Clubs.Find(athleteDto.Verein.ID);
             db.SaveChanges();
 
             return Ok();

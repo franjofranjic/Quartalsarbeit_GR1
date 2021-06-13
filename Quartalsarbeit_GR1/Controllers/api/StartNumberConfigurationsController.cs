@@ -33,19 +33,6 @@ namespace Quartalsarbeit_GR1.Controllers.api
             return Ok(startNumberConfigurationDtos);
         }
 
-        // GET: api/StartNumberConfigurations/5
-        [HttpGet]
-        public IHttpActionResult GetStartNumberConfiguration(int id)
-        {
-            StartNumberConfiguration startNumberConfiguration = db.StartNumberConfigurations.Find(id);
-            if (startNumberConfiguration == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(Mapper.Map<StartNumberConfiguration, StartNumberConfigurationDto>(startNumberConfiguration));
-        }
-
         // PUT: api/StartNumberConfigurations/5
         [HttpPut]
         public IHttpActionResult PutStartNumberConfiguration(int id, StartNumberConfigurationDto startNumberConfigurationDto)

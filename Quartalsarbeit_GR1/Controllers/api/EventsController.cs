@@ -71,6 +71,14 @@ namespace Quartalsarbeit_GR1.Controllers.api
                 return BadRequest();
 
             var Event = Mapper.Map<EventDto, Event>(eventDto);
+            var startNumberConfiguration = new StartNumberConfiguration { 
+                minStartnummer = 1,
+                maxStartnummer = 100,
+                gruppierung = "Verein",
+                differenz = 5,
+                anlass = Event,
+            };
+            db.StartNumberConfigurations.Add(startNumberConfiguration);
             db.Events.Add(Event);
             db.SaveChanges();
 

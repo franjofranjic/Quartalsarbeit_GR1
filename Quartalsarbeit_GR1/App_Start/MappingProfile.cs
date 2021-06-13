@@ -18,6 +18,7 @@ namespace Quartalsarbeit_GR1.App_Start
             Mapper.CreateMap<Participant, ParticipantDto>();
             Mapper.CreateMap<Athlete, AthleteDto>();
             Mapper.CreateMap<ApplicationUser, VereinsverantwortlicherDto>();
+            Mapper.CreateMap<StartNumberConfiguration, StartNumberConfigurationDto>();
 
 
             // Dto to Domain
@@ -37,6 +38,8 @@ namespace Quartalsarbeit_GR1.App_Start
                 .ForMember(c => c.ID, opt => opt.Ignore());
             Mapper.CreateMap<VereinsverantwortlicherDto, ApplicationUser>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
+            Mapper.CreateMap<StartNumberConfigurationDto, StartNumberConfiguration>()
+                .ForMember(c => c.ID, opt => opt.Ignore());
         }
     }
 }
