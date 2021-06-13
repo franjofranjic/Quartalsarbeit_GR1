@@ -31,7 +31,6 @@ namespace Quartalsarbeit_GR1
                       "~/Content/bootstrap-lumen.css",
                       "~/Content/bootstrap-theme.css",
                       "~/content/datatables/css/datatables.bootstrap.css",
-                      "~/Content/bootstrap.css",
                       "~/Content/nav.css",
                       "~/content/typeahead.css",
                       "~/content/toastr.css",

@@ -16,62 +16,7 @@
         <i class="fa fa-align-left"></i>
         <span>Show Sidebar</span>
     </button>
-    
     @Html.Partial("_Nav")
-
-    <!-- <div class="wrapper">
-        Sidebar
-    <nav id="sidebar">
-
-        <div id="dismiss">
-            <i class="fas fa-address-book"></i>
-        </div>
-
-        <div class="sidebar-header">
-            <h3>Techsport</h3>
-        </div>
-
-        <ul class="navbar-nav mr-auto">
-            if (User.IsInRole(RoleName.Administrator))
-            {
-
-                <li>Html.ActionLink("Kategorien", "Index", "Categories")</li>
-                <li>Html.ActionLink("Disziplinen", "Index", "Disciplines")</li>
-                <li>Html.ActionLink("Vereine", "Index", "Clubs")</li>
-                <li>Html.ActionLink("Anlässe", "Index", "Events")</li>
-            }
-            else
-            {
-                <li>Html.ActionLink("Anlässe", "Index", "Events")</li>
-                <li>Html.ActionLink("Athleten", "Index", "Athletes")</li>
-            }
-
-        </ul>
-        Html.Partial("_LoginPartial")
-
-    </nav>
-         -->
-    <!-- Page Content
-    <div id="content">
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mainnav">
-            <div class="container-fluid">
-
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                    <span>Toggle Sidebar</span>
-                </button>
-            </div>
-        </nav>
-
-        <div class="container body-content">
-           RenderBody()
-            <hr />
-        </div>
-    </div>
-    <!-- Dark Overlay element
-    <div class="overlay"></div>
-    </div> -->
     <div class="container body-content">
         @RenderBody()
         <hr />

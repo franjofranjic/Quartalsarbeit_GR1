@@ -109,7 +109,13 @@ namespace Quartalsarbeit_GR1.Controllers.api
             }
 
             db.Disciplines.Remove(disziplin);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch {
+                return BadRequest("Es besteht abhängige Konfigurationen mit der Disziplin");
+            }
 
             return Ok(disziplin);
         }

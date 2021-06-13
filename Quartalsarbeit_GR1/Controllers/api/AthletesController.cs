@@ -80,6 +80,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
             }
 
             var athlete = Mapper.Map<AthleteDto, Athlete>(athleteDto);
+            athlete.Verein = db.Clubs.Find(athleteDto.Verein.ID);
             db.Athletes.Add(athlete);
             db.SaveChanges();
 

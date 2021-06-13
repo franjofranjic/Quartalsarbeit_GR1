@@ -93,38 +93,54 @@ namespace Quartalsarbeit_GR1.Controllers.api
 
         // POST: api/Configurations/addCategory
         [HttpPost]
-        public IHttpActionResult AddCategory(ConfigurationDto newConfiguration)
+        [Route("api/Configurations/addCategory")]
+        public IHttpActionResult AddCategory(Configuration newConfiguration)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            db.Configurations.Add(Mapper.Map<ConfigurationDto, Configuration>(newConfiguration));
+            newConfiguration = new Configuration
+            {
+                Anlass = db.Events.Find(newConfiguration.Anlass.ID),
+                Disziplin = db.Disciplines.Find(newConfiguration.Disziplin.ID),
+                Kategorie = db.Categories.Find(newConfiguration.Kategorie.ID),
+            };
+            db.Configurations.Add(newConfiguration);
             db.SaveChanges();
 
             return Ok();
         }
 
         [HttpDelete]
-        public IHttpActionResult DeleteCategory(int id)
+        public IHttpActionResult DeleteCategory(ConfigurationDto configurationDto)
         {
-            Configuration configuration = db.Configurations.Find(id);
-            if (configuration == null)
+            var categoryID = db.Categories.Single(
+                          c => c.ID == configurationDto.Category.ID).ID;
+
+            var eventsID = db.Events.Single(
+                c => c.ID == configurationDto.Event.ID).ID;
+
+            foreach (var disciplineDto in configurationDto.Disciplines)
             {
-                return NotFound();
+                Configuration configuration = db.Configurations.Where(c => c.Anlass.ID == eventsID && c.Disziplin.ID == disciplineDto.ID && c.Kategorie.ID == categoryID).FirstOrDefault();
+
+                if(configuration != null)
+                    db.Configurations.Remove(configuration);
+
             }
 
-            db.Configurations.Remove(configuration);
             db.SaveChanges();
 
-            return Ok(configuration);
+            return Ok();
         }
 
         // DELETE: api/Configurations/5
         [HttpDelete]
-        public IHttpActionResult DeleteConfiguration(int id)
+        [Route("api/Configurations/deleteConfig")]
+        public IHttpActionResult DeleteConfiguration(Configuration delConfiguration)
         {
-            Configuration configuration = db.Configurations.Find(id);
+            Configuration configuration = db.Configurations.Where(c => c.Anlass.ID == delConfiguration.Anlass.ID && c.Disziplin.ID == delConfiguration.Disziplin.ID && c.Kategorie.ID == delConfiguration.Kategorie.ID).FirstOrDefault();
             if (configuration == null)
             {
                 return NotFound();
@@ -133,7 +149,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
             db.Configurations.Remove(configuration);
             db.SaveChanges();
 
-            return Ok(configuration);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

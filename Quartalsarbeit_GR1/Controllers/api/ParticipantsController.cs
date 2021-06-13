@@ -21,15 +21,16 @@ namespace Quartalsarbeit_GR1.Controllers.api
 
         // GET: api/Participants
         [HttpGet]
-        public IEnumerable<ParticipantDto> GetParticipants(int id)
+        [Route("api/Participants/{eventID}")]
+        public IEnumerable<ParticipantDto> GetParticipants(int eventID)
         {
-            var Event = db.Events.Find(id);
+            var Event = db.Events.Find(eventID);
 
             var participants = db.Participants
                   .Include(c => c.Event)
                   .Include(c => c.Athlete)
                   .Include(c => c.Athlete.Verein)
-                  .Where(c => c.Event.ID == id)
+                  .Where(c => c.Event.ID == eventID)
                   .ToList();
 
             var athletes = db.Athletes

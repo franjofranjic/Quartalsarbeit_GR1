@@ -18,6 +18,7 @@ namespace Quartalsarbeit_GR1.Dtos
         public string TelGeschaeft { get; set; }
 
         public String Email { get; set; }
+        public String UserName { get; set; }
 
     }
 }

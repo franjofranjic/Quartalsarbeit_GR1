@@ -21,16 +21,14 @@ namespace Quartalsarbeit_GR1.Controllers.api
 
         // GET: api/StartNumberConfigurations
         [HttpGet]
-        public IHttpActionResult GetStartNumberConfigurations()
+        public IHttpActionResult GetStartNumberConfigurations(int id)
         {
-            var startNumberConfigurationQuery = db.StartNumberConfigurations
-                .Include(c => c.anlass);
+            var startNumber = db.StartNumberConfigurations
+                .Include(c => c.anlass).Where(s => s.anlass.ID == id).FirstOrDefault();
 
     
 
-            var startNumberConfigurationDtos = startNumberConfigurationQuery
-                .ToList()
-                .Select(Mapper.Map<StartNumberConfiguration, StartNumberConfigurationDto>);
+            var startNumberConfigurationDtos = Mapper.Map<StartNumberConfiguration, StartNumberConfigurationDto>(startNumber);
 
             return Ok(startNumberConfigurationDtos);
         }
