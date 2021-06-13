@@ -5,42 +5,70 @@
 }
 
 <h2>Kategorien</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create", "Categories", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", "Category", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table table-striped table-bordered">
-    <thead class="thead-dark">
+<table id="categories" class="table table-bordered table-hover" style="width:100%;">
+    <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Bezeichnung)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinAlter)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxAlter)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Geschlecht)
-            </th>
+            <th>Bezeichnung</th>
+            <th>Min. Alter</th>
+            <th>Max. Alter</th>
+            <th>Geschlecht</th>
         </tr>
     </thead>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Bezeichnung)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MinAlter)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaxAlter)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Geschlecht)
-        </td>
-    </tr>
+    <tbody>
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#categories").DataTable({
+                ajax: {
+                    url: "/api/Categories",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "bezeichnung",
+                        render: function (data, type, discipline) {
+                            return "<a href='/Categories/edit/" + discipline.id + "'>" + discipline.bezeichnung + "</a>";
+                        }
+                    },
+                    {
+                        data: "minAlter",
+                    },
+                    {
+                        data: "maxAlter",
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-categories-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+
+
+            $("#categories").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this category?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/categories/" + button.attr("data-categories-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 }
 
-</table>
+

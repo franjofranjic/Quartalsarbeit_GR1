@@ -7,63 +7,86 @@
 <h2>Athleten</h2>
 
 <p>
-    @Html.ActionLink("Create New", "AthleteCreate")
+    @Html.ActionLink("Create New", "Create", "Athlete", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Vorname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nachname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Geburtstag)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Geschlecht)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gewicht)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Groesse)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Verein.Vereinsname)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table id="athletes" class="table table-bordered table-hover" style="width:100%;">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vorname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nachname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Geburtstag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Geschlecht)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gewicht)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Groesse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Verein.Vereinsname)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "AthleteEdit", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "AthleteDelete", new { id = item.ID })
-            </td>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Verein</th>
+            <th>Geburtstag</th>
+            <th>Geschlecht</th>
+            <th>Gewicht</th>
+            <th>Grösse</th>
         </tr>
-    }
-
+    </thead>
+    <tbody>
+    </tbody>
 </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#athletes").DataTable({
+                ajax: {
+                    url: "/api/Athletes",
+                    dataSrc: ""
+                },
+                columns: [
+                   {
+                        data: "vorname",
+                    },
+                    {
+                        data: "nachname",
+                    },
+                    /*{
+                        data: "verein",
+                        render: function (data, type, club) {
+                            return "club.vereinsname";
+
+                    },*/
+                    {
+                        data: "geburtstag",
+                    },
+                    {
+                        data: "geschlecht",
+                    },
+                    {
+                        data: "gewicht",
+                    },
+                    {
+                        data: "grösse",
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-athletes-id=" + data + ">Delete</button><br><button class='btn-link js-edit' data-athletes-id=" + data + ">Edit</button>";
+                        }
+                    }
+                    
+                ]
+            });
+
+
+            $("#athlete").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this athlete?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/athletes/" + button.attr("data-athletes-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+
