@@ -592,7 +592,6 @@
     <Content Include="Views\Clubs\AthleteDelete.cshtml" />
     <Content Include="Views\Events\addCategory.cshtml" />
     <Content Include="Views\Clubs\AthleteCreate.cshtml" />
-    <Content Include="Views\Events\StartNumberConfiguration.cshtml" />
     <Content Include="Views\Events\StartNumberConfigurationEdit.cshtml" />
     <Content Include="Views\Disciplines\Create.cshtml" />
     <Content Include="Views\Categories\Create.cshtml" />

@@ -18,40 +18,35 @@
 <div data-event-id="@Model.ID" id="event"></div>
 
 <div id="accordion">
-    <h3>titel</h3>
-    <p>Text Body</p>
+    <h3>Kategorie</h3>
+    <div>
+        <div class="form-group">
+            <label>Disziplin</label>
+            <div class="tt-container">
+                <input name="discipline" type="text" value="" class="form-control discipline" />
+            </div>
+        </div>
+
+        <table id="disciplines" class="table table-bordered table-hover" style="width:100%;">
+            <thead>
+                <tr>
+                    <th>Disziplin</th>
+                    <th>Abkürzung</th>
+                    <th>Formel</th>
+                    <th>Löschen</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button>Speichern</button>
+    </div>
 </div>
-
-
-<div class="accordion-body">
-    <h1 class="category"></h1>
-    <table id="disciplines" class="table table-bordered table-hover" style="width:100%;">
-        <thead>
-            <tr>
-                <th>Disziplin</th>
-                <th>Abkürzung</th>
-                <th>Formel</th>
-                <th>Löschen</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
-
-<!-- Configurations anzeigen -->
 
 @section scripts
 {
     <script>
         $(document).ready(function () {
-            $("#accordion").accordion(
-                {
-                    collapsible: true,
-                    event: "click",
-                    active: 1
-                });
-
             var configs;
             var eventID = $("#event").attr("data-event-id").valueOf();
             $.ajax({
@@ -63,6 +58,52 @@
             });
 
             function initTables(res) {
+                var container = $("#accordion");
+
+                var disciplines = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('bezeichnung'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    remote: {
+                        url: '/api/Disciplines?query=%QUERY',
+                        wildcard: '%QUERY'
+                    }
+                });
+
+
+
+                res.forEach(element => {
+                    console.log(element);
+                    container.append("<h3>" + element.category.bezeichnung + "</h3><div><div class='form-group'><label>Disziplin</label><div class='tt-container'><input name='discipline' type='text' value='' class='form-control discipline' /></div></div>" +
+                        "<table id='disciplines' class='table table-bordered table-hover' style='width:100%;'>"+
+                            "<thead><tr><th>Disziplin</th><th>Abkürzung</th><th>Formel</th><th>Löschen</th></tr></thead>"+
+                        "<tbody></tbody></table><button>Speichern</button></div>");
+
+                }); 
+
+                container.accordion(
+                    {
+                        collapsible: true,
+                        event: "click",
+                        active: 1
+                    });
+
+
+                $('.discipline').typeahead({
+                    minLength: 1,
+                    highlight: true
+                }, {
+                    name: 'disciplines',
+                    display: 'bezeichnung',
+                    source: disciplines
+                }).on("typeahead:select", function (e, discipline) {
+
+                    $("#discipline").typeahead("val", "");
+
+                    res[0].disciplines.push(discipline)
+                    table.row.add(discipline).draw();
+                });
+
+
                 res.forEach(element => {
                     // init die Sachen
                     $('.accordion-body').append('<div id="div' + element.id + '">' + element.category.bezeichnung + '</div>');
@@ -90,6 +131,23 @@
                             }
                         }
                     ]
+                });
+
+                $("#disciplines").on("click", ".js-delete", function () {
+                    var button = $(this);
+
+                    bootbox.confirm("Are you sure you want to delete this Discipline from the Config?", function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/Configurations/deleteConfig",
+                                data: button.attr("data-event-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    table.row(button.parents("tr")).remove().draw();
+                                }
+                            });
+                        }
+                    });
                 });
             }
 
