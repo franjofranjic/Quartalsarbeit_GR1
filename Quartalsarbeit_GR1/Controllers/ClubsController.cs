@@ -80,11 +80,10 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Vereinsname,Ort,PLZ,Strasse,Vereinsveratnwortlicher")] Club verein)
+        public ActionResult Edit(Club verein)
         {
             if (ModelState.IsValid)
             {
-                var vereinsverantwortlicher = verein.Vereinsverantwortlicher;
                 db.Entry(verein).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -113,6 +112,8 @@ namespace Quartalsarbeit_GR1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Club verein = db.Clubs.Find(id);
+            db.Athletes.RemoveRange(db.Athletes.Where(a => a.Verein.ID == verein.ID));
+            db.SaveChanges();
             db.Clubs.Remove(verein);
             db.SaveChanges();
             return RedirectToAction("Index");

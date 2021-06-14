@@ -92,8 +92,12 @@ namespace Quartalsarbeit_GR1.Controllers.api
         {
             var clubsInDb = db.Clubs.SingleOrDefault(c => c.ID == id);
 
+
             if (clubsInDb == null)
                 return NotFound();
+
+            db.Athletes.RemoveRange(db.Athletes.Where(a => a.Verein.ID == clubsInDb.ID));
+            db.SaveChanges();
 
             db.Clubs.Remove(clubsInDb);
             db.SaveChanges();
