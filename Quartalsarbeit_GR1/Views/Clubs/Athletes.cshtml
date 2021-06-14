@@ -7,8 +7,10 @@
 
 <h2>Athleten</h2>
 
+<div data-club-id="@Model.ID" id="club"></div>
+
 <p>
-    @Html.ActionLink("Create New", "Create", "Athlete", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "AthleteCreate", "Clubs", null, new { @class = "btn btn-primary" })
 </p>
 <table id="athletes" class="table table-bordered table-hover" style="width:100%;">
     <thead>
@@ -30,7 +32,7 @@
 {
     <script>
         $(document).ready(function () {
-            var clubID = $("#club").attr("data-club").valueOf();
+            var clubID = $("#club").attr("data-club-id").valueOf();
 
             var table = $("#athletes").DataTable({
                 ajax: {
@@ -59,7 +61,7 @@
                     {
                         data: "id",
                         render: function (data) {
-                            return "<button class='btn-link js-delete' data-athlete-id=" + data + ">Bearbeiten</button>";
+                            return "<a href='/Clubs/AthleteEdit/" + data + "'>Bearbeiten</a>";
                         }
                     },
                     {
