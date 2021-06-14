@@ -67,7 +67,7 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Club verein = db.Clubs.Find(id);
+            Club verein = db.Clubs.Include(c => c.Vereinsverantwortlicher).Where(c => c.ID == id).FirstOrDefault();
             if (verein == null)
             {
                 return HttpNotFound();
