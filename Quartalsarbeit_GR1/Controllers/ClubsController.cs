@@ -170,7 +170,10 @@ namespace Quartalsarbeit_GR1.Controllers
                 db.Entry(athlet).State = EntityState.Modified;
                 
                 db.SaveChanges();
-                return RedirectToAction("Athletes/" + db.Athletes.Where(a => a.ID == athlet.ID).FirstOrDefault().Verein.ID);
+
+                //return RedirectToAction("Athletes/" + db.Athletes.Where(a => a.ID == athlet .ID).FirstOrDefault().Verein.ID);
+                return View("Index");
+
             }
             return View("AthletEdit/"+athlet.ID, athlet);
         }
