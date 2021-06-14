@@ -21,8 +21,7 @@ namespace Quartalsarbeit_GR1.Controllers
         {
             var userId = User.Identity.GetUserId();
             var verein = db.Clubs.Where(e => e.Vereinsverantwortlicher.Id == userId).FirstOrDefault();
-            var athletenVonVerein = db.Athletes.Where(e => e.Verein.ID == verein.ID).ToList();
-            return View(athletenVonVerein);
+            return View(verein);
         }
 
         // GET: Athletes/Details/5

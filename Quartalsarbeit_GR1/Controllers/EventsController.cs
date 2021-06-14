@@ -163,34 +163,9 @@ namespace Quartalsarbeit_GR1.Controllers
         // GET: Events/Participants/5
         public ActionResult Participants(int? id)
         {
-            var athleten = db.Athletes.ToList();
-            var teilnehmer = db.Participants.Where(e => e.Event.ID == id).ToList();
-            //Todo der Participants besitzt auch Wahldisziplinen in einem zweiten Schritt
+            var Event = db.Events.Where(e => e.ID == id).FirstOrDefault();
 
-            var modelList = new List<TeilnehmerViewModel>();
-
-            foreach (var athlet in athleten)
-            {
-                modelList.Add(new TeilnehmerViewModel
-                {
-                    athlet = athlet,
-                    teilnahme = teilnehmer.Any(e => e.Athlete.ID == athlet.ID)
-                });
-            }
-
-            if (!User.IsInRole(RoleName.Administrator))
-            {
-                var userId = User.Identity.GetUserId();
-                Club Verein = db.Clubs.Where(e => e.Vereinsverantwortlicher.Id == userId).First();
-                foreach (var model in modelList)
-                {
-
-                    var vereinId = model.athlet;
-                }
-                var filteredModelList = modelList.Where(e => e.athlet.Verein.ID == Verein.ID).ToList();
-            }
-
-            return View(modelList);
+            return View(Event);
         }
 
         // GET: Events/Configuration/5

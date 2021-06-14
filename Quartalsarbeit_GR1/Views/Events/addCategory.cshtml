@@ -8,9 +8,9 @@
 <h2>Neue Kategorie</h2>
 
 <form id="newConfig">
-    <div data-event="@Model" id="event"></div>
+    <div data-event="@Model.ID" id="event"></div>
 
-    <div class="form-group">
+    <div class="form-group" hidden="hidden">
         <input id="event" name="event" required type="text" value="" class="form-control" hidden="hidden" />
     </div>
 
@@ -41,7 +41,15 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            console.log($("#event").attr("data-event").valueOf());
+            var eventID = $("#event").attr("data-event").valueOf();
+            $.ajax({
+                  url: "/api/Events/" + eventID,
+                  type: 'GET',
+                  success: function (res) {
+                      vm.event = res;
+                  }
+            });
+
             var vm = {
                 disciplines: []
             };
@@ -92,6 +100,7 @@
             var validator = $("#newConfig").validate({
                 submitHandler: function () {
                     console.log(vm);
+                    console.log()
                     $.ajax({
                         url: "/api/Configurations",
                         method: "post",

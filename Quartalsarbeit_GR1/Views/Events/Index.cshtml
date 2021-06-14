@@ -4,57 +4,86 @@
     ViewBag.Title = "Anlaesse";
 }
 
-<h2>Index</h2>
+<h2>Anlässe</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Bezeichnung)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ort)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Datum)
-        </th>
-        <th>Konfiguration</th>
-        <th>Teilnehmer</th>
-        <th>Statisik</th>
-        <th>Startnummer Block</th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Bezeichnung)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Ort)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Datum)
-    </td>
-    <td>
-        @Html.ActionLink("Konfiguration", "Configuration", new { id = item.ID })
-    </td>
-    <td>
-        @Html.ActionLink("Teilnehmer", "Participants", new { id = item.ID })
-    </td>
-    <td>
-        @Html.ActionLink("Statistik", "Statistics", new { id = item.ID })
-    </td>
-    <td>
-        @Html.ActionLink("Startnummer Block", "StartNumberConfiguration", new { id = item.ID })
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-    </td>
-</tr>
-}
-
+<table id="events" class="table table-bordered table-hover" style="width:100%;">
+    <thead>
+        <tr>
+            <th>Bezeichnung</th>
+            <th>Ort</th>
+            <th>Datum</th>
+            <th>Konfiguration</th>
+            <th>Teilnehmer</th>
+            <th>Statistik</th>
+            <th>Startnummer Block</th>
+            <th>Bearbeiten</th>
+            <th>Löschen</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#events").DataTable({
+                ajax: {
+                    url: "/api/Events",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "bezeichnung",
+                    },
+                    {
+                        data: "ort",
+                    },
+                    {
+                        data: "datum",
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/events/Configuration/" + event.id + "'>Konfiguration</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/events/participants/" + event.id + "'>Teilnehmer</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/events/statistics/" + event.id + "'>Statistik</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/events/StartNumberConfiguration/" + event.id + "'>Startnummernblock</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/events/edit/" + event.id + "'>Bearbeiten</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-athlete-id=" + data + ">Löschen</button>";
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

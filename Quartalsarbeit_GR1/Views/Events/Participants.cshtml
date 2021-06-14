@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Quartalsarbeit_GR1.Models.TeilnehmerViewModel>
+﻿@using Quartalsarbeit_GR1.Models;
+@model Event
 
 @{
     ViewBag.Title = "Teilnehmer";
@@ -6,86 +7,78 @@
 
 <h2>Teilnehmer</h2>
 
-@using (Html.BeginForm("SubmitTest"))
-{
-    <table class="table">
-        <tr>
-            <th>Teilnehmen</th>
-            <th>
-                @Html.DisplayNameFor(model => model.athlet.Vorname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.athlet.Nachname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.athlet.Verein)
-            </th>
-        </tr>
+<form id="Participants">
 
-        @foreach (var item in Model)
-        {
+    <div data-event="@Model.ID" id="event"></div>
+
+    <table id="participants" class="table table-bordered table-hover">
+        <thead>
             <tr>
-                <td>
-                    @Html.CheckBoxFor(modelItem => item.teilnahme)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.athlet.Vorname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.athlet.Nachname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.athlet.Verein.Vereinsname)
-                </td>
+                <th>Teilnehmen</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>Verein</th>
             </tr>
-        }
-
+        </thead>
+        <tbody>
+        </tbody>
     </table>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="button" value="Create" class="btn btn-default" onclick="SubmitForm(this)" />
-        </div>
-    </div>
+    <button class="btn btn-primary">Submit</button>
+</form>
 
-}
-
-<table id="athletes" class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Vorname</th>
-            <th>Nachname</th>
-            <th>Verein</th>
-            <th>Teilnehmen</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
 @section scripts
 {
     <script>
         $(document).ready(function () {
-            var table = $("#athletes").DataTable({
-                ajax: {  
-                    url: "/api/Athletes",
+            var eventID = $("#event").attr("data-event").valueOf();
+
+            var table = $("#participants").DataTable({
+                ajax: {
+                    url: "/api/Participants/" + eventID,
                     dataSrc: ""
                 },
                 columns: [
                     {
-                        data: "vorname",
+                        data: "teilnahme",
+                        render: function (data) {
+                            return "<input class='form-check-input' type='checkbox' value=" + data + ">";
+                        }
                     },
                     {
-                        data: "nachname"
+                        data: "athlete.vorname",
                     },
                     {
-                        data: "verein.vereinsname"
+                        data: "athlete.nachname"
                     },
-                    {  
-                        data: "nachname"
-                    }
+                    {
+                        data: "athlete.verein.vereinsname"
+                    },
+
                 ]
             });
+
+            $("#Participants").submit(function (event) {
+                var data = table.data();
+                console.log(data[0]);
+                console.log(eventID);
+                event.preventDefault();
+
+                $.ajax({
+                    url: "/api/Participants/" + eventID,
+                    method: "post",
+                    data: data
+                })
+                    .done(function () {
+                        toastr.success("Teilnehmer gespeichert");
+                    })
+                    .fail(function () {
+                        toastr.error("Teilnehmer nicht gespeichert");
+                    });
+
+                return false;
+            });
+
         });
     </script>
 }

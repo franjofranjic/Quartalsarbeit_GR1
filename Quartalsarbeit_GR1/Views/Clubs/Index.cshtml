@@ -4,54 +4,69 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Vereine</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Vereinsname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ort)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PLZ)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Strasse)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Vereinsverantwortlicher.Email)
-        </th>
-        <th>Athleten</th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Vereinsname)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Ort)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.PLZ)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Strasse)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Vereinsverantwortlicher.Email)
-    </td>
-    <td>
-        @Html.ActionLink("Athleten", "Athletes", new { id = item.ID })
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-    </td>
-</tr>
-}
-
+<table id="clubs" class="table table-bordered table-hover" style="width:100%;">
+    <thead>
+        <tr>
+            <th>Vereinsname</th>
+            <th>Ort</th>
+            <th>PLZ</th>
+            <th>Strasse</th>
+            <th>Email</th>
+            <th>Athleten</th>
+            <th>Bearbeiten</th>
+            <th>Löschen</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#clubs").DataTable({
+                ajax: {
+                    url: "/api/Clubs",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "vereinsname",
+                    },
+                    {
+                        data: "ort",
+                    },
+                    {
+                        data: "plz",
+                    },
+                    {
+                        data: "strasse",
+                    },
+                    {
+                        data: "vereinsverantwortlicher.email",
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/Clubs/Athletes/" + event.id + "'>Athleten</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, event) {
+                            return "<a href='/Clubs/edit/" + event.id + "'>Bearbeiten</a>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-athlete-id=" + data + ">Löschen</button>";
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

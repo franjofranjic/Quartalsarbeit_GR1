@@ -23,11 +23,25 @@ namespace Quartalsarbeit_GR1.Controllers.api
         [HttpGet]
         public IEnumerable<AthleteDto> GetAthletes()
         {
-            var athletesQuery = db.Athletes;
+            IQueryable<Athlete> athletesQuery = db.Athletes;
 
             return athletesQuery
+                .Include(c => c.Verein)    
+                .Include(c => c.Verein.Vereinsverantwortlicher)
+                .ToList()
+                .Select(Mapper.Map<Athlete, AthleteDto>);
+        }
+
+        [HttpGet]
+        [Route("api/Athletes/getByClub/{ClubID}")]
+        public IEnumerable<AthleteDto> GetAthletes(int clubID)
+        {
+            IQueryable<Athlete> athletesQuery = db.Athletes;
+
+            return db.Athletes
                 .Include(c => c.Verein)
                 .Include(c => c.Verein.Vereinsverantwortlicher)
+                .Where(c => c.Verein.ID == clubID)
                 .ToList()
                 .Select(Mapper.Map<Athlete, AthleteDto>);
         }

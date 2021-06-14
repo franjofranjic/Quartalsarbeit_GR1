@@ -191,7 +191,7 @@ namespace Quartalsarbeit_GR1.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Konto bestätigen", "Bitte bestätigen Sie Ihr Konto. Klicken Sie dazu <a href=\"" + callbackUrl + "\">hier</a>");
 
-                    return RedirectToAction("Index", "Anlaesse");
+                    return RedirectToAction("Index", "Events");
                 }
                 AddErrors(result);
             }
@@ -420,7 +420,7 @@ namespace Quartalsarbeit_GR1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Anlaesse");
+            return RedirectToAction("Index", "Events");
         }
 
         //

@@ -155,7 +155,7 @@ namespace Quartalsarbeit_GR1.Controllers.api
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
+            { 
                 db.Dispose();
             }
             base.Dispose(disposing);

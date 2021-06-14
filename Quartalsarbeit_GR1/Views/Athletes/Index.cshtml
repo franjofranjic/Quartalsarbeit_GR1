@@ -1,68 +1,76 @@
-﻿@model IEnumerable<Quartalsarbeit_GR1.Models.Athlete>
+﻿@using Quartalsarbeit_GR1.Models;
+@model Club
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Athlet</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Vorname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Nachname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Geburtstag)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Geschlecht)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gewicht)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Groesse)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Verein.Vereinsname)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Vorname)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Nachname)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Geburtstag)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Geschlecht)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Gewicht)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Groesse)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Verein.Vereinsname)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-    </td>
-</tr>
-}
-
+<div data-club="@Model.ID" id="club"></div>
+<table id="athletes" class="table table-bordered table-hover" style="width:100%;">
+    <thead>
+        <tr>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Geburtstag</th>
+            <th>Gewicht</th>
+            <th>Grösse</th>
+            <th>Verein</th>
+            <th>Bearbeiten</th>
+            <th>Löschen</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var clubID = $("#club").attr("data-club").valueOf();
+
+            var table = $("#athletes").DataTable({
+                ajax: {
+                    url: "/api/Athletes/getByClub/" + clubID,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "vorname",
+                    },
+                    {
+                        data: "nachname",
+                    },
+                    {
+                        data: "geburtstag",
+                    },
+                    {
+                        data: "gewicht",
+                    },
+                    {
+                        data: "groesse",
+                    },
+                    {
+                        data: "verein.vereinsname",
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-athlete-id=" + data + ">Bearbeiten</button>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-athlete-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
