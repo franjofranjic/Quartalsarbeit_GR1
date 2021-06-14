@@ -155,7 +155,7 @@ namespace Quartalsarbeit_GR1.Controllers
             Athlete athlet = db.Athletes.Find(id);
             db.Athletes.Remove(athlet);
             db.SaveChanges();
-            return RedirectToAction("Athletes");
+            return RedirectToAction("Athletes/" + db.Athletes.Where(a => a.ID == athlet.ID).FirstOrDefault().ID);
         }
 
         // POST: Clubs/Edit/5
@@ -168,10 +168,11 @@ namespace Quartalsarbeit_GR1.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(athlet).State = EntityState.Modified;
+                
                 db.SaveChanges();
-                return RedirectToAction("Athletes");
+                return RedirectToAction("Athletes/" + db.Athletes.Where(a => a.ID == athlet.ID).FirstOrDefault().Verein.ID);
             }
-            return View(athlet);
+            return View("AthletEdit/"+athlet.ID, athlet);
         }
 
         // GET: Athletes/Create
@@ -181,7 +182,7 @@ namespace Quartalsarbeit_GR1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Athlete athlet = db.Athletes.Find(id);
+            Athlete athlet = db.Athletes.Include(a => a.Verein).Where(a => a.ID == id).FirstOrDefault();
             if (athlet == null)
             {
                 return HttpNotFound();
@@ -190,9 +191,11 @@ namespace Quartalsarbeit_GR1.Controllers
         }
 
         // GET: Athletes/Create
-        public ActionResult AthleteCreate()
+        public ActionResult AthleteCreate(int id)
         {
-            return View();
+            Club club = db.Clubs.Find(id);
+            Athlete athlet = new Athlete { Verein = club};
+            return View(athlet);
         }
 
         // POST: Athletes/Create
@@ -200,14 +203,11 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AthleteCreate([Bind(Include = "ID,Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse")] Athlete athlet)
+        public ActionResult AthleteCreate([Bind(Include = "Vorname,Nachname,Geburtstag,Geschlecht,Gewicht,Groesse,Verein")] Athlete athlet)
         {
             if (ModelState.IsValid)
             {
-                // Hardcoded Ya Salame
-                var vereinsId = 7;
-                var Verein = db.Clubs.Where(c => c.ID == vereinsId).FirstOrDefault();
-                athlet.Verein = Verein;
+                athlet.Verein = db.Clubs.Include(c => c.Vereinsverantwortlicher).Where(c => c.ID == athlet.Verein.ID).FirstOrDefault();
                 db.Athletes.Add(athlet);
                 db.SaveChanges();
                 return RedirectToAction("Index");

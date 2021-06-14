@@ -9,8 +9,8 @@
 
 <div data-club-id="@Model.ID" id="club"></div>
 
-<p>
-    @Html.ActionLink("Create New", "AthleteCreate", "Clubs", null, new { @class = "btn btn-primary" })
+<p> 
+    @Html.ActionLink(linkText:"Create New", actionName:"AthleteCreate", controllerName:"Clubs", routeValues: new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-primary" })
 </p>
 <table id="athletes" class="table table-bordered table-hover" style="width:100%;">
     <thead>
