@@ -15,6 +15,7 @@
         <thead>
             <tr>
                 <th>Teilnehmen</th>
+                <th>Startnummer</th>
                 <th>Vorname</th>
                 <th>Nachname</th>
                 <th>Verein</th>
@@ -46,6 +47,9 @@
                         }
                     },
                     {
+                        data: "startNumber",
+                    },
+                    {
                         data: "athlete.vorname",
                     },
                     {
@@ -59,9 +63,8 @@
             });
 
             $("#Participants").submit(function (event) {
-                var data = table.data();
-                console.log(data[0]);
-                console.log(eventID);
+                var data = table.data().toArray();
+                console.log(data);
                 event.preventDefault();
 
                 $.ajax({

@@ -128,8 +128,7 @@ namespace Quartalsarbeit_GR1.Controllers
             }
             else {
                 var verein = db.Clubs.Find(id);
-                var athletenVonVerein = db.Athletes.Where(e => e.Verein.ID == verein.ID).ToList();
-                return View("Athletes", athletenVonVerein);
+                return View("Athletes", verein);
             }
         }
 

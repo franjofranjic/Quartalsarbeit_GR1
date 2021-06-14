@@ -67,6 +67,22 @@
                     }
                 ]
             });
+
+            $("#clubs").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure you want to delete this Club?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/Clubs/" + button.attr("data-categories-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
         });
     </script>
 }

@@ -17,21 +17,27 @@
 
 <div data-event-id="@Model.ID" id="event"></div>
 
-<div class="accordion" id="accordionExample">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Accordion Item #1
-            </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-        </div>
-    </div>
+<div id="accordion">
+    <h3>titel</h3>
+    <p>Text Body</p>
 </div>
 
+
+<div class="accordion-body">
+    <h1 class="category"></h1>
+    <table id="disciplines" class="table table-bordered table-hover" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Disziplin</th>
+                <th>Abkürzung</th>
+                <th>Formel</th>
+                <th>Löschen</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
 <!-- Configurations anzeigen -->
 
@@ -39,14 +45,54 @@
 {
     <script>
         $(document).ready(function () {
+            $("#accordion").accordion(
+                {
+                    collapsible: true,
+                    event: "click",
+                    active: 1
+                });
+
+            var configs;
             var eventID = $("#event").attr("data-event-id").valueOf();
             $.ajax({
                 url: "/api/Configurations/" + eventID,
                 type: 'GET',
                 success: function (res) {
-                    console.log(res);
+                    initTables(res);
                 }
             });
+
+            function initTables(res) {
+                res.forEach(element => {
+                    // init die Sachen
+                    $('.accordion-body').append('<div id="div' + element.id + '">' + element.category.bezeichnung + '</div>');
+                });
+
+                var table = $("#disciplines").DataTable({
+                    data: res[0].disciplines,
+                    columns: [
+                        {
+                            data: "bezeichnung",
+                            render: function (data, type, discipline) {
+                                return "<a href='/disciplines/edit/" + discipline.id + "'>" + discipline.bezeichnung + "</a>";
+                            }
+                        },
+                        {
+                            data: "abkuerzung",
+                        },
+                        {
+                            data: "formel",
+                        },
+                        {
+                            data: "id",
+                            render: function (data) {
+                                return "<button class='btn-link js-delete' data-discipline-id=" + data + ">Delete</button>";
+                            }
+                        }
+                    ]
+                });
+            }
+
         });
     </script>
 }
