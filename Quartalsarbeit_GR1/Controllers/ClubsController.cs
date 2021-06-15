@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
+    [Authorize(Roles = RoleName.Administrator)]
     public class ClubsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -13,7 +13,7 @@ using System.Web.Http.Description;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
-    //[Authorize(Roles = RoleName.Administrator)]
+    [Authorize(Roles = RoleName.Administrator)]
     public class StatisticsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

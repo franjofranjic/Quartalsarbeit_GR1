@@ -10,6 +10,7 @@ using Quartalsarbeit_GR1.Models;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
+    [Authorize(Roles = RoleName.Administrator)]
     public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

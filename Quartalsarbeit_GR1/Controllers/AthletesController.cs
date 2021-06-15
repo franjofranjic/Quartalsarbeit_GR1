@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
+    [Authorize]
     public class AthletesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Quartalsarbeit_GR1.Controllers
 {
+    [Authorize]
     public class EventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -60,6 +61,7 @@ namespace Quartalsarbeit_GR1.Controllers
             if (ModelState.IsValid)
             {
                 db.Events.Add(anlass);
+                db.StartNumberConfigurations.Add(new StartNumberConfiguration { anlass = anlass });
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

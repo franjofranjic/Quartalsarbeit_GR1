@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace Quartalsarbeit_GR1.Controllers.api
 {
-    //[Authorize(Roles = RoleName.Administrator)]
+    [Authorize(Roles = RoleName.Administrator)]
     public class StartNumberConfigurationsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

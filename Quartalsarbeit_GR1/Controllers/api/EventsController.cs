@@ -95,6 +95,19 @@ namespace Quartalsarbeit_GR1.Controllers.api
             if (eventInDb == null)
                 return NotFound();
 
+            List<Configuration> configs = db.Configurations.Where(e => e.Anlass.ID == id).ToList();
+            StartNumberConfiguration startNumberConfiguration = db.StartNumberConfigurations.Where(e => e.anlass.ID == id).FirstOrDefault();
+            List<Participant> participants = db.Participants.Where(p => p.Event.ID == id).ToList();
+
+            if (configs != null) 
+                db.Configurations.RemoveRange(configs);
+
+            if(startNumberConfiguration != null)
+                db.StartNumberConfigurations.Remove(startNumberConfiguration);
+
+            if(participants != null)
+                db.Participants.RemoveRange(participants);
+
             db.Events.Remove(eventInDb);
             db.SaveChanges();
 

@@ -50,11 +50,10 @@
 
 
                 res.forEach(element => {
-                    console.log(element);
-                    container.append("<h3>" + element.category.bezeichnung + "</h3><div><div class='form-group'><label>Disziplin</label><div class='tt-container'><input name='discipline' type='text' value='' class='form-control " + element.category.bezeichnung+"' /></div></div>" +
+                    container.append("<h3>" + element.category.bezeichnung + "</h3>"+
                         "<table id='" + element.category.bezeichnung + "' class='table table-bordered table-hover' style='width:100%;'>" +
-                            "<thead><tr><th>Disziplin</th><th>Abkürzung</th><th>Formel</th><th>Löschen</th></tr></thead>"+
-                        "<tbody></tbody></table><button>Speichern</button></div>");
+                            "<thead><tr><th>Disziplin</th><th>Abkürzung</th><th>Formel</th></tr></thead>"+
+                        "<tbody></tbody></table></div>");
 
 
                     var table = $("#" + element.category.bezeichnung).DataTable({
@@ -71,12 +70,6 @@
                             },
                             {
                                 data: "formel",
-                            },
-                            {
-                                data: "id",
-                                render: function (data) {
-                                    return "<button class='btn-link js-delete' data-discipline-id=" + data + ">Delete</button>";
-                                }
                             }
                         ]
                     });
