@@ -224,13 +224,13 @@ namespace Quartalsarbeit_GR1.Controllers
 
 
         // GET: Events/Startnummeblockr/5
-        public ActionResult StartNumberConfigurationEdit(int? id)
+        public ActionResult StartNumberConfigurationEdit(int? eventID)
         {
-            if (id == null)
+            if (eventID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StartNumberConfiguration startnummernblock = db.StartNumberConfigurations.Include(e => e.anlass).Where(e => e.anlass.ID == id).First();
+            StartNumberConfiguration startnummernblock = db.StartNumberConfigurations.Where(e => e.anlass.ID == eventID).First();
             if (startnummernblock == null)
             {
                 return HttpNotFound();
@@ -243,7 +243,7 @@ namespace Quartalsarbeit_GR1.Controllers
         // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StartNumberConfigurationEdit(StartNumberConfiguration startnummernblock)
+        public ActionResult StartNumberConfigurationEdit([Bind(Include = "ID, minStartnummer,maxStartnummer,gruppierung,differenz")] StartNumberConfiguration startnummernblock)
         {
             if (ModelState.IsValid)
             {
